@@ -1,11 +1,18 @@
 School of Computing
+
 CA326 Year 3 Project Proposal Form
+
 SECTION A
-Project Title __Plant_Simulation________________________________________
+Project Title __Plant_Simulation_______________________________________
+
 Student 1 Name __Gergley Gellert_______________   ID Number  17379616__
+
 Student 2 Name __Nevan Oman Crowe__________    ID Number 17407926__
+
 Student 3 Name ______________________________    ID Number ___________ 
- (A third team member is exceptional and requires detailed justification.) 
+
+(A third team member is exceptional and requires detailed justification.) 
+ 
 Staff Member Consulted _______________________________
 
 Project Description (1-2 pages):
@@ -18,8 +25,13 @@ The plant needs a certain amount of resources to stay alive depending on their c
 If a plant survives a certain amount of growth revolutions the types of plant remaining would be taken and  depending on its size and the amount of that type they would then breed a new generation. The better a type performs the higher likelihood it continues onto the next generation.
 
 Division of Work: We’ll be approaching this project in a pair programming fashion but we’ll accept individual responsibilities for back end and front end modules of this project.
+
 Programming language(s) - Java
+
 Programming tool(s) - Java Compiler, Text editor, Java Libraries
-Learning Challenges - We will face many challenges with this project, the first of which would be to learn how to plan, code and debug self learning a.i. to simulate the plant growth. We would also have to look into game theory with the plants competing against each other for resources. We would also have to research, look up and develop algorithms that simulate plant growth. We will learn how to use java libraries such as Weka and JSL for our project. 
+
+Learning Challenges - We will face many challenges with this project, the first of which would be to learn how to plan, code and debug self learning a.i. to simulate the plant growth. We would also have to look into game theory with the plants competing against each other for resources. We would also have to research, look up and develop algorithms that simulate plant growth. We will learn how to use java libraries such as Weka and JSL for our project.
+
 Hardware / software platform - OpenSuse Linux, Lab PC
+
 Special Hardware/Software Requirements: None
