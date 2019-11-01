@@ -30,7 +30,7 @@ Programming language(s) - Java
 
 Programming tool(s) - Java Compiler, Text editor, Java Libraries
 
-Learning Challenges - We will face many challenges with this project, the first of which would be to learn how to plan, code and debug self learning a.i. to simulate the plant growth. We would also have to look into game theory with the plants competing against each other for resources. We would also have to research, look up and develop algorithms that simulate plant growth. We will learn how to use java libraries such as Weka and JSL for our project.
+Learning Challenges - We will face many challenges with this project, the first of which would be to learn how to plan, code and debug self learning a.i. to simulate the plant growth. We would also have to look into game theory with the plants competing against each other for resources. We would also have to research, look up and develop algorithms that simulate plant growth. We will learn how to use java libraries such as DESMO-J and JSL for our project.
 
 Hardware / software platform - OpenSuse Linux, Lab PC
 
