@@ -4,10 +4,14 @@ CA326 Year 3 Project Proposal Form
 
 SECTION A
 Project Title __Plant_Simulation________________________________________
+
 Student 1 Name __Gergley Gellert_______________   ID Number  17379616__
+
 Student 2 Name __Nevan Oman Crowe__________    ID Number 17407926__
+
 Student 3 Name ______________________________    ID Number ___________ 
  (A third team member is exceptional and requires detailed justification.) 
+ 
 Staff Member Consulted ___Annalina Caputo____________________________
 
 Project Description (1-2 pages):
