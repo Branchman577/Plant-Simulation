@@ -4,16 +4,16 @@ Nevan Oman Crowe
 Functional Specification Document 
 **0. Table of content**
 A table of contents with page numbers indicated for all sections / headings should be included.
-1. Introduction - Page 3
+1 Introduction - Page 3 
 1.1 Purpose - Page 3
 1.2 Scope - Page 3
 1.3 Glossary - Page 3
-2. General Description - Page 5
+2 General Description - Page 5
 2.1 System Functions - Page 5
 2.2 User Characteristics and Objectives - Page 6
 2.3 Operational Scenarios - Page 7
 2.4 Constraints - Page 7
-3. Functional Requirements - Page 9
+3 Functional Requirements - Page 9
 	3.1 Plant Activity - Page 9
 	3.2 Plant Interaction - Page 10
 	3.3 Dynamic Environment Simulation - Page 11
@@ -21,17 +21,17 @@ A table of contents with page numbers indicated for all sections / headings shou
 	3.5 Genetic Alterations - Page 12
 	3.6 Multi Generational Simulation - Page 13
 	3.7 UI/GUI Functionality - Page 14
-4. System Architecture - Page 15
+4 System Architecture - Page 15
  
-5. High-Level Design - Page 16
+5 High-Level Design - Page 16
  
-6. Preliminary Schedule - Page 18
+6 Preliminary Schedule - Page 18
  
-7. Appendices - Page 20
+7 Appendices - Page 20
 
 **1. Introduction**
 
-**1.1 Purpose**
+**1.1 Purpose** 
 Our system is a simulation of plant life and growth with the plants competing in a dynamic environment with the goal of reaching maturity, reproducing with another plant and carrying on their genes to the next generation. With the ultimate goal of simulating plant evolution and changes in growth patterns to increase future survival chances. 
 
 **1.2 Scope**
@@ -42,35 +42,35 @@ The basis of the simulation and its environment would be a grid simulation of ge
 The simulation will be visualised through a live updating 3d model. Each time a plant grows, reproduces, die or drains a resource the model will be updated to reflect what change took place. Once the simulation has ended the user will be provided with a slider. The slider will allow the user to rewind to specific points in the simulation and provide a freeze frame of the selected state.
 
 **1.3 Definitions / Glossary**
-**Java**
+**Java:**
 Java is a high level object-orientated programming language that we will be using to develop the back-end of the project.
 
 
-**Javascript**
+**Javascript:**
 Javascript is a high level object-orientated programming language that is widely used on webpages to make them interactive and more accessible. We will be developing the front-end of our project using Javascript.
 
-**Algorithms**
+**Algorithms:**
 A sequence of instructions given to a computer to perform certain specified tasks.
 
-**Genetic Algorithms**
+**Genetic Algorithms:**
 Algorithms that change and sometimes mutate their various attributes assigned to them whenever the plants “reproduce” through a Darwinian Style evolution.
 
-**Jar File**
+**Jar File:**
 A java program compiled and compressed into an executable file.
 
-**Time Tick**
+**Time Tick:**
 A unit of time used by the simulation to simulate real time.
 	
-**User Interface**
+**User Interface:**
 Also known as UI, it is the visual component of the program that the user sees and interacts with.
 
-**Graphical User Interface**
+**Graphical User Interface:**
 Also known as GUI, it is the visual part of the program to show the user the board state and the components interacting with each other through graphical icons 
 
-**Dynamic**
+**Dynamic:**
 Changing environment in real-time due to external factors
 
-**Genes**
+**Genes:**
 Attributes and variable associated to our simulated plants such as growth speed, resource consumption, window to reproduce in, aggressiveness.
 
 **2. General Description**
