@@ -189,7 +189,7 @@ The plants activity is dependant on most of the other functions of the simulatio
 
 Description
 
-	Plant Interactions is how the plants interact with each other. There's numerous ways of plants interacting with each other. First of which is when a plant wants to reproduce. When a plant reaches maturity after numerous factors, it wants to reproduce. To do this is needs to interact with another plant that also has reached maturity and are within a certain distance with each other. 
+Plant Interactions is how the plants interact with each other. There's numerous ways of plants interacting with each other. First of which is when a plant wants to reproduce. When a plant reaches maturity after numerous factors, it wants to reproduce. To do this is needs to interact with another plant that also has reached maturity and are within a certain distance with each other. 
 
 Another way the plants interact with each other is contesting with each other over resources. Depending on how much growth a plant has around a resource tile on the board, it gathers a certain amount of that specific resource per “time tick”, the interaction with other plants here is that it can compete with other plants for a resource by growing more around a tile than the other plants. This “aggressiveness” factor, how aggressive a plant should be is one of its attributes where it has a percentage chance to take the aggressive choice or not. This attribute will change over time between generations.
 
@@ -197,7 +197,7 @@ Another way plants will factor in this aggressive in is when the plant is consid
 
 Criticality
 
-	How the plants interact with each other is one of our top priorities as without it, we would just have a static simulation of a plant growing on it’s own. There wouldn’t be much depth to the project as we would only be able simulate 1 generation of plants that ignore each other’s existence. This wouldn’t reflect how plants grow and interact with each other in a real life scenario
+How the plants interact with each other is one of our top priorities as without it, we would just have a static simulation of a plant growing on it’s own. There wouldn’t be much depth to the project as we would only be able simulate 1 generation of plants that ignore each other’s existence. This wouldn’t reflect how plants grow and interact with each other in a real life scenario
 
 Technical issues
 
