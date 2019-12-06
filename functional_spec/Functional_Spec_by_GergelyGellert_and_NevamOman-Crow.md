@@ -1,26 +1,49 @@
 CA326
-Gergely Gellert 
-Nevan Oman Crowe 
-Functional Specification Document 
+
+Gergely Gellert
+
+Nevan Oman Crowe
+
+Functional Specification Document
+
 **0. Table of content**
+
 A table of contents with page numbers indicated for all sections / headings should be included.
+
 1 Introduction - Page 3 
+
 1.1 Purpose - Page 3
+
 1.2 Scope - Page 3
+
 1.3 Glossary - Page 3
+
 2 General Description - Page 5
+
 2.1 System Functions - Page 5
+
 2.2 User Characteristics and Objectives - Page 6
+
 2.3 Operational Scenarios - Page 7
+
 2.4 Constraints - Page 7
+
 3 Functional Requirements - Page 9
+
 	3.1 Plant Activity - Page 9
+
 	3.2 Plant Interaction - Page 10
+
 	3.3 Dynamic Environment Simulation - Page 11
+
 	3.4 Single Generation Simulation - Page 11
+
 	3.5 Genetic Alterations - Page 12
+
 	3.6 Multi Generational Simulation - Page 13
+
 	3.7 UI/GUI Functionality - Page 14
+
 4 System Architecture - Page 15
  
 5 High-Level Design - Page 16
