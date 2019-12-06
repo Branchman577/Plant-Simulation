@@ -246,7 +246,7 @@ The UI and GUI are heavily dependant on the Plant Activity, Plant Interaction an
 **4. System Architecture**
 
 The system is composed of a Java based client that the user launches. The client will need a few user inputs at the start to start up the simulation. During the simulation the user can interact with the simulation but overall won’t really affect it.
-
+![System_Architecture_funcspec.jpg](System_Architecture_funcspec.jpg)
 
 **5. High-Level Design**
 
