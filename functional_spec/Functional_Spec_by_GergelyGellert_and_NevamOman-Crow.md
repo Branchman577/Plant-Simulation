@@ -208,7 +208,7 @@ Dependencies with other requirements
 This requirement will depend be depended on the previous requirement. Plants will decide how to interact with other plants depending on how other plants are growing, what resource that plant needs at this current time and what that plant needs to do at that current time. This requirement will also depend on the dynamic environment simulation as the way the plants decide to interact with each other, especially when deciding to compete over resources, will depend on what resources available.
 
 **3.3 Dynamic Environment Simulation**
-	Description
+Description
 
 Having a dynamic board state involves having the board  to evolve and change based on the plants actions for example the plants consuming all of a resource in an area and having the resources return after a time or plants dying and part of the plant turn into a resource tile based on what resources the plant had left. These help to change up the board as the real world would change over time.
 
