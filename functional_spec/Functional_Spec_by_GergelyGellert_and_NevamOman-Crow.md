@@ -246,13 +246,18 @@ The UI and GUI are heavily dependant on the Plant Activity, Plant Interaction an
 **4. System Architecture**
 
 The system is composed of a Java based client that the user launches. The client will need a few user inputs at the start to start up the simulation. During the simulation the user can interact with the simulation but overall won’t really affect it.
+
 ![System_Architecture_funcspec.jpg](System_Architecture_funcspec.jpg)
 
 **5. High-Level Design**
 
 **5.1 Context Diagram**
 
+![contextdiagram.png](contextdiagram.png)
+
 **5.2 Data Flow Diagram**
+
+![func_spec_dfd.jpg](func_spec_dfd.jpg)
 
 **6. Preliminary Schedule**
 
@@ -314,6 +319,8 @@ To provide a sort of timeline for how the project development
 Start and End Date - 06/03/20-18/03/20
 
 Below is a Gnatt Chart for the above preliminary schedule. We constructed it using the website gnattpro.com.
+
+![gnatt_diagram.png](gnatt_diagram.png)
 
 **7. Appendices**
 
