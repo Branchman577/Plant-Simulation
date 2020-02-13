@@ -1,5 +1,8 @@
+import co.paralleluniverse.fibers.SuspendExecution;
+import desmoj.core.simulator.*;
 import java.util.*;
-public class Plant extends Tile{
+
+public class Plant extends SimProcess {
 
 	public double fitness;
 	public double agress;
@@ -16,11 +19,15 @@ public class Plant extends Tile{
 	public double nitro;
 	public ArrayList<Position> positions;
 	public ArrayList<Position> edges;
-
+	public Position origin;
+	public Position growingTo;
+	public LaunchSimulation simulation;
 	private Integer typeflag = 1;
 
 
-	public Plant(double fitness_func,double agressiveness,double growth_rate,double resource_conswater,double resource_consiron,double resource_consnitro, int maturity, double mutation,Position pos){
+	public Plant(double fitness_func,double agressiveness,double growth_rate,double resource_conswater,double resource_consiron,double resource_consnitro, int maturity, double mutation,Position pos, Model owner, String name, boolean showInTrace){
+		super(owner,name,showInTrace);
+		this.simulation=(LaunchSimulation)owner;
 		this.fitness = fitness_func;
 		this.agress = agressiveness;
 		this.growth = growth_rate;
@@ -38,7 +45,7 @@ public class Plant extends Tile{
 		this.positions.add(pos);
 		this.edges = new ArrayList<Position>();
 		this.edges.add(pos);
-
+		this.origin=pos;
 
 	}
 
@@ -58,5 +65,16 @@ public class Plant extends Tile{
 
 	public String toString(){
 		return "Plant";
+	}
+	public void lifeCycle() throws SuspendExecution{
+		sendTraceNote("Plant is planted "+this.origin.Gety()+" "+this.origin.Getx());
+		passivate();
+//		while(this.water!=0&&this.iron!=0&&this.nitro!=0&&this.age<this.maturity+10){
+//			System.out.println("works?");
+//		}
+//		if (Math.random()<=0.5){
+	//		Board.boardboi[this.origin.Gety()][this.origin.Getx()]=new Resource(5,-1.0);
+		//}
+		
 	}
 }

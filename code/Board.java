@@ -1,3 +1,4 @@
+import desmoj.core.simulator.*;
 import java.util.*;
 public class Board{
 
@@ -7,9 +8,9 @@ public class Board{
 	public Integer noWater;
 	public Integer noIron;
 	public Integer noNitro;
-	public Tile[][] boardboi;
+	public SimProcess[][] boardboi;
 
-	public Board( Integer sizey, Integer sizex, Integer noPlants ){
+	public Board( Integer sizey, Integer sizex, Integer noPlants, LaunchSimulation name){
 		this.sizex = sizex;
 		this.sizey = sizey;
 		this.noPlants = noPlants;
@@ -17,16 +18,16 @@ public class Board{
 		this.noWater = resources;
 		this.noIron = resources;
 		this.noNitro = resources;
-		this.boardboi = makeboard();
+		this.boardboi = makeboard(name);
 	}
 
-	public Tile[][] makeboard(){
+	public SimProcess[][] makeboard(LaunchSimulation name){
 		double plantcount = (double)this.noPlants;
 		double plantprob;
 		double resourcecount = (plantcount + 2) * 2; // plus 2 for stones
 		double resourceprob;
 
-		Tile[][] returnarray = new Tile[this.sizey +2 ][this.sizex]; // plus 2 for sky
+		SimProcess[][] returnarray = new SimProcess[this.sizey +2 ][this.sizex]; // plus 2 for sky
 
 		//placing plants
 		for (int i =2; i < returnarray.length; i++ ) {
@@ -38,30 +39,31 @@ public class Board{
 					double mat = Math.random() * 20 + 1;
 					int matt = (int)(mat) + 10;
 					Position pos = new Position(i,j);
-					returnarray[i][j] =  new Plant(Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),matt, Math.random(),pos);
+					returnarray[i][j] =  new Plant(Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),matt, Math.random(),pos,name, "Plant", true );
 					plantcount -= 1;
-
+					returnarray[i][j].activate();
 					//System.out.println(returnarray[i][j]);
 				}
 				else{
-					returnarray[i][j] = new Tile();
+					returnarray[i][j] = null;
 				}
 						
 			}
 		}
 		//Placing resources
-		for (int l =2; l < returnarray.length; l++ ) {
+		for (int l =4; l < returnarray.length; l++ ) {
 			for (int k =0; k < returnarray[l].length; k++ ) {
 				resourceprob = probplacer((double)this.sizey,(double)this.sizex,resourcecount,0.3,k,l);
 
-				if (returnarray[l][k].gettype() != 1) {
+				if (returnarray[l][k]== null) {
 					if ((resourceprob >=1 || Math.random()< resourceprob) && resourcecount != 0) {
 
 						int numtype = (int)(Math.random() * ((5 - 2) + 1)) + 2; // random number between 2 and 5 inclusive
 						if(numtype == 5)
-							returnarray[l][k] = new Resource(5,-1.0);
+							returnarray[l][k] = new Resource(5,-1.0,name,"Rock",true,l,k);
 						else
-							returnarray[l][k] = new Resource(numtype,1000.0);
+							returnarray[l][k] = new Resource(numtype,1000.0,name,"Resource",true,l,k);
+						returnarray[l][k].activate();
 						resourcecount -=1;
 					}
 				}
