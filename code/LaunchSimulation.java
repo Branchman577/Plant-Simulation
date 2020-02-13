@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 
 public class LaunchSimulation extends Model{
 	public Board board;
-	public int noplant=25;
+	public int noplant=3;
 	public LaunchSimulation(Model owner, String Name, boolean showInReport, boolean showInTrace){
 		super(owner, Name, showInReport, showInTrace);
 	}
@@ -29,7 +29,11 @@ public class LaunchSimulation extends Model{
 
 	public String description(){return "This is a third year project Plant Simulation by Nevan and Gergely";}
 	public void doInitialSchedules(){
-		;
+		for(SimProcess[] row:board.boardboi){
+			for(SimProcess object:row){
+				if (object!=null){object.activate();}
+			}
+		}
 	}
 	//Initialise all static objects
 	public void init(){

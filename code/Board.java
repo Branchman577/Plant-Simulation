@@ -41,7 +41,7 @@ public class Board{
 					Position pos = new Position(i,j);
 					returnarray[i][j] =  new Plant(Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),matt, Math.random(),pos,name, "Plant", true );
 					plantcount -= 1;
-					returnarray[i][j].activate();
+//					returnarray[i][j].activate();
 					//System.out.println(returnarray[i][j]);
 				}
 				else{
@@ -63,7 +63,7 @@ public class Board{
 							returnarray[l][k] = new Resource(5,-1.0,name,"Rock",true,l,k);
 						else
 							returnarray[l][k] = new Resource(numtype,1000.0,name,"Resource",true,l,k);
-						returnarray[l][k].activate();
+//						returnarray[l][k].activate();
 						resourcecount -=1;
 					}
 				}

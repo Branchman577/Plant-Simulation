@@ -1,7 +1,7 @@
 import co.paralleluniverse.fibers.SuspendExecution;
 import desmoj.core.simulator.*;
 import java.util.*;
-
+import java.util.concurrent.TimeUnit;
 public class Plant extends SimProcess {
 
 	public double fitness;
@@ -49,7 +49,7 @@ public class Plant extends SimProcess {
 
 	}
 
-	public void Searchfor(int type, Board board, Position positiontosearchfrom)
+	public void Searchfor(int type, Position positiontosearchfrom)
 	{
 		// will be implemented soon
 	}
@@ -68,7 +68,12 @@ public class Plant extends SimProcess {
 	}
 	public void lifeCycle() throws SuspendExecution{
 		sendTraceNote("Plant is planted "+this.origin.Gety()+" "+this.origin.Getx());
-		passivate();
+		Board board = simulation.board;
+		while(true){
+			System.out.println(presentTime());
+			sendTraceNote("Sent a trace note");
+			hold(new TimeSpan(1, TimeUnit.MINUTES));
+		}
 //		while(this.water!=0&&this.iron!=0&&this.nitro!=0&&this.age<this.maturity+10){
 //			System.out.println("works?");
 //		}
