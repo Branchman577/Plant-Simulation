@@ -77,5 +77,12 @@ public class Board{
 		return (1)-(((num_of_tiles-numtoplace)/(rows*columns)));
 
 	}
+	public Integer Gety(){
+		return this.sizey;
+	}
+
+	public Integer Getx(){
+		return this.sizex;
+	}
 	
 }
