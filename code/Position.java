@@ -15,6 +15,6 @@ public class Position{
 	}
 
 	public String toString(){
-		return Integer.toString(y) + "|" + Integer.toString(x);
+		return Integer.toString(y) + " " + Integer.toString(x);
 	}
 }

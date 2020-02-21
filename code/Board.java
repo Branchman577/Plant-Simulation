@@ -84,5 +84,12 @@ public class Board{
 	public Integer Getx(){
 		return this.sizex;
 	}
+
+	public int distance(Position growthpoint, Position growto){
+		return((Math.abs(growthpoint.Getx()-growto.Getx()))+Math.abs((growthpoint.Gety()-growto.Gety())));
+	}
+	public boolean validpos(Position checkpos){
+		return ( ( (checkpos.Getx() >=0) && (checkpos.Getx() <= this.sizex) ) && ( (checkpos.Gety()>=2) && (checkpos.Gety() <= this.sizey) ) );
+	}
 	
 }
