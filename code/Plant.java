@@ -18,15 +18,20 @@ public class Plant extends SimProcess {
 	public double iron;
 	public double nitro;
 	public ArrayList<Position> positions;
-	public ArrayList<Position> edges;
 	public Position origin;
 	public Position growingTo;
 	public LaunchSimulation simulation;
-	private Integer typeflag = 1;
+	private int typeflag = 1;
+	private boolean growthflag = false;
+	private boolean searchflag = true;
+	private Position growto;
+	private Position growthpoint;
+	private Model owner;
 
 
 	public Plant(double fitness_func,double agressiveness,double growth_rate,double resource_conswater,double resource_consiron,double resource_consnitro, int maturity, double mutation,Position pos, Model owner, String name, boolean showInTrace){
 		super(owner,name,showInTrace);
+		this.owner = owner;
 		this.simulation=(LaunchSimulation)owner;
 		this.fitness = fitness_func;
 		this.agress = agressiveness;
@@ -43,18 +48,16 @@ public class Plant extends SimProcess {
 		this.nitro = 100.0;
 		this.positions = new ArrayList<Position>();
 		this.positions.add(pos);
-		this.edges = new ArrayList<Position>();
-		this.edges.add(pos);
 		this.origin=pos;
+		this.growthpoint = this.origin;
 
 	}
 
-	public Position Searchfor(int type)
-	{
+	public Position Searchfor(int type){
 		SimProcess[][] bb = this.simulation.board.boardboi;
 
-		int numedges = edges.size();
-		int edgechoice = (int)(Math.random() * ((edges.size()))) + 0;
+		int numedges = positions.size();
+		int edgechoice = (int)(Math.random() * ((numedges))) + 0;
 		Position edgepoint = this.positions.get(edgechoice);
 
 		int x = edgepoint.Getx();
@@ -67,7 +70,7 @@ public class Plant extends SimProcess {
 		needtocheck.add(new Position(y+1,x));
 		needtocheck.add(new Position(y,x-1));
 		needtocheck.add(new Position(y,x+1));
-		//add the fiest 4 immediate positions around the edgepoint
+		//add the first 4 immediate positions around the edgepoint
 		
 		int maxchecks = this.simulation.board.Getx()*this.simulation.board.Gety();
 		int numchecks = 0;
@@ -81,7 +84,8 @@ public class Plant extends SimProcess {
 
 		 		if(bb[checky][checkx] instanceof Resource){
 		 			if (Resourcechecker(type, (Resource)bb[checky][checkx]))
-						return checkpos; 						
+		 				growthpoint = edgepoint;
+						return checkpos; // Returning found resource						
 		 		}
 		 		alreadychecked.add(checkpos);
 		 		Position pos1 = new Position(checky-1,checkx);
@@ -112,9 +116,19 @@ public class Plant extends SimProcess {
 
 
 
-	public void Grow(Position posg){
-		this.positions.add(posg);
-		// needs to be edited to grow
+	public boolean Grow(Position posg){
+
+		SimProcess[][] bb = this.simulation.board.boardboi;
+		int x = posg.Getx();
+		int y = posg.Gety();
+		if (!(bb[y][x] instanceof Resource) && !(bb[y][x] instanceof Plant))  {
+			this.positions.add(posg);
+			bb[y][x] = new Root(this,posg,this.owner, "Root", false);
+			this.growthpoint = posg;
+			sendTraceNote("Made root at position" + " " + this.growthpoint);
+			return true;
+		}
+		return false;
 	}
 
 	public int gettype(){
@@ -124,22 +138,97 @@ public class Plant extends SimProcess {
 	public String toString(){
 		return "Plant";
 	}
+
 	public void lifeCycle() throws SuspendExecution{
 		sendTraceNote("Plant is planted "+this.origin.Gety()+" "+this.origin.Getx());
 		Board board = simulation.board;
-		Position waterboi = Searchfor(2);
-		sendTraceNote("Water is at "+waterboi.Getx()+ " "+waterboi.Gety());
+		Position resourceboi = Searchfor(lowestresource());
+
+		if(positions.contains(resourceboi)){
+			sendTraceNote("Resource not found");
+		}
+		else{
+			sendTraceNote("Resource is at "+resourceboi.Gety()+ " "+resourceboi.Getx());
+			growthflag = true;
+			searchflag = false;
+			growto = resourceboi;
+		}
+	
 		while(true){
+			if(searchflag == true){
+				resourceboi = Searchfor(lowestresource());
+				if(positions.contains(resourceboi)){
+					sendTraceNote("Resource not found");
+				}
+				else{
+					sendTraceNote("Resource is at "+resourceboi.Gety()+ " "+resourceboi.Gety());
+					growthflag = true;
+					searchflag = false;
+					growto = resourceboi;
+
+				}
+			}
+			else if ( simulation.board.distance(growthpoint,growto) >1){// checking that growth is not beside the resource
+						Position waytogrow = growthdirection(growthpoint,growto);
+						if(waytogrow != growthpoint)
+							growthflag = Grow(waytogrow);
+							sendTraceNote("Grew towards Position" + " " + growto);
+				}
+			else{
+				growthflag = false;
+				searchflag = true;
+			}
+					
 			System.out.println(presentTime());
-			sendTraceNote("Sent a trace note");
+			sendTraceNote("Trace Note");
 			hold(new TimeSpan(1, TimeUnit.MINUTES));
 		}
-//		while(this.water!=0&&this.iron!=0&&this.nitro!=0&&this.age<this.maturity+10){
-//			System.out.println("works?");
-//		}
-//		if (Math.random()<=0.5){
-	//		Board.boardboi[this.origin.Gety()][this.origin.Getx()]=new Resource(5,-1.0);
-		//}
+		// need it to get to continue to grow
+
 		
+	}
+	public int lowestresource(){
+
+		if(this.water <= this.iron && this.water <= this.nitro)
+			return 2;
+		else if (this.iron <= this.water && this.iron <= this.nitro) 
+			return 3;
+		else
+			return 4;
+	}
+	public Position growthdirection(Position growthpoint, Position growto){//returns the next point to grow to
+		int growthpointx = growthpoint.Getx();
+		int growthpointy = growthpoint.Gety();
+
+		int growtox = growto.Getx();
+		int growtoy = growto.Gety();
+
+		int distancetogrow = simulation.board.distance(growthpoint,growto);
+		ArrayList<Position> possiblegrowth = new ArrayList<Position>();
+		ArrayList<Position> possiblegrowthcheckedlonger = new ArrayList<Position>();
+
+		possiblegrowth.add(new Position(growthpointy+1,growthpointx));
+		possiblegrowth.add(new Position(growthpointy-1,growthpointx));
+		possiblegrowth.add(new Position(growthpointy,growthpointx+1));
+		possiblegrowth.add(new Position(growthpointy,growthpointx-1));
+
+		while (possiblegrowth.size() != 0){
+			int num = (int)(Math.random() * ((3) + 1));//number between 0-3 inclusive
+			Position check = possiblegrowth.get(num);
+
+			if( simulation.board.validpos(check) && (!(simulation.board.boardboi[check.Gety()][check.Getx()] instanceof Resource) && !(simulation.board.boardboi[check.Gety()][check.Getx()] instanceof Plant ))){
+				if (simulation.board.distance(check,growto) < distancetogrow)
+					return check;
+				else{
+					possiblegrowthcheckedlonger.add(check);
+				}
+			}
+		}
+		//no choice is shorter but are still valid points not taken up
+		if(possiblegrowthcheckedlonger.size()>0)
+			return possiblegrowthcheckedlonger.get((int)(Math.random() * ((possiblegrowthcheckedlonger.size()) + 1)));
+		else
+			return growthpoint;
+			// it found no possible growthpoints
 	}
 }
