@@ -37,7 +37,7 @@ public class LaunchSimulation extends Model{
 	}
 	//Initialise all static objects
 	public void init(){
-		board = new Board(10, 9, noplant, this);
+		board = new Board(15, 15, noplant, this);
 		
 	}
 }
