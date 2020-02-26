@@ -1,6 +1,10 @@
+import co.paralleluniverse.fibers.SuspendExecution;
 import desmoj.core.simulator.*;
+import desmoj.core.dist.*;
 import java.util.*;
-public class Board{
+import java.util.concurrent.TimeUnit;
+
+public class Board extends SimProcess{
 
 	public Integer sizex;
 	public Integer sizey;
@@ -8,7 +12,8 @@ public class Board{
 	public SimProcess[][] boardboi;
 	public Integer resources;
 
-	public Board( Integer sizey, Integer sizex, Integer noPlants, LaunchSimulation name){
+	public Board( Integer sizey, Integer sizex, Integer noPlants, LaunchSimulation name, String desc, boolean showInTrace){
+		super(name,desc,showInTrace);
 		this.sizex = sizex;
 		this.sizey = sizey;
 		this.noPlants = noPlants;
@@ -26,6 +31,7 @@ public class Board{
 		SimProcess[][] returnarray = new SimProcess[this.sizey +2 ][this.sizex]; // plus 2 for sky
 
 		//placing plants
+		int x=1;
 		for (int i =2; i < returnarray.length; i++ ) {
 			for (int j =0; j < returnarray[i].length; j++ ) {
 				plantprob = probplacer(2.0,(double)this.sizex,plantcount,0.3,j,i);
@@ -35,8 +41,9 @@ public class Board{
 					double mat = Math.random() * 20 + 1;
 					int matt = (int)(mat) + 10;
 					Position pos = new Position(i,j);
-					returnarray[i][j] =  new Plant(Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),matt, Math.random(),pos,name, "Plant", true );
+					returnarray[i][j] =  new Plant(Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),matt, Math.random(),pos,name, "Plant", true,x );
 					plantcount -= 1;
+					x++;
 //					returnarray[i][j].activate();
 					//System.out.println(returnarray[i][j]);
 				}
@@ -95,11 +102,6 @@ public class Board{
 
 		return returnarray;
 	}
-	// Nedd to ad rocks
-		//if(numtype == 5 && numrocks !=0){
-							//returnarray[l][k] = new Resource(5,-1.0,name,"Rock",true,l,k);
-							//numrocks -=1;
-						//}
 	public double probplacer(double rows, double columns,double numtoplace, double base, int scanx,int scany){
 		//System.out.println(rows+" "+columns+" "+numtoplace+" "+base+" "+scanx+" "+scany);
 		double num_of_tiles = (columns - scanx) + (columns *((rows-1.0)-(scany-2)));
@@ -119,6 +121,37 @@ public class Board{
 	}
 	public boolean validpos(Position checkpos){
 		return ( ( (checkpos.Getx() >=0) && (checkpos.Getx() <= this.sizex) ) && ( (checkpos.Gety()>=2) && (checkpos.Gety() <= this.sizey) ) );
+	}
+	public void lifeCycle() throws SuspendExecution{
+
+		while(true){
+			sendTraceNote(generateBoardState());
+			hold(new TimeSpan(1, TimeUnit.MINUTES));
+		}
+	}
+	public String generateBoardState(){
+		String output="";
+		int i=1;
+		for (SimProcess[] layer: boardboi){
+
+			for (SimProcess item:layer){
+				if (item instanceof Resource){
+					output=output+"||"+item.toString();
+				}
+				else if (item instanceof Plant){
+					Plant temp = (Plant)item;
+					output=output+"||P"+temp.plant_no;
+				}
+				else if(item instanceof Root){
+					Root temp = (Root)item;
+					output=output+"||R"+temp.originplant.plant_no;
+				}		
+				else{output=output+"||"+null;}
+			}
+			output=output+"##";
+			i++;
+		}
+		return output;
 	}
 	
 }
