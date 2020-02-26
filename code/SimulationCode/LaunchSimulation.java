@@ -5,9 +5,9 @@ import java.util.concurrent.TimeUnit;
 
 public class LaunchSimulation extends Model{
 	public Board board;
-	public int noplant=3;
 	public int size_x=10;
 	public int size_y=9;
+	public int noplant=3;
 	public LaunchSimulation(Model owner, String Name, boolean showInReport, boolean showInTrace){
 		super(owner, Name, showInReport, showInTrace);
 	}
@@ -42,7 +42,7 @@ public class LaunchSimulation extends Model{
 	//Initialise all static objects
 	public void init(){
 		
-		board = new Board(size_x, size_y, noplant, this, "Board",true);
+		board = new Board(size_x, size_y, noplant, this, "Board", true);
 		
 	}
 }

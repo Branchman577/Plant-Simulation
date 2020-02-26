@@ -161,6 +161,7 @@ function checkIfRoot(data, x,y,object){
 	return false;
 }
 function main(){
+//	console.log("got here');
 	if (window.executed==true){
 		window.executed=false;
 		fetch('Results_trace.html')
@@ -169,6 +170,7 @@ function main(){
 			.then(text => text.split('\n'))
 			.then(function(text){
 				for (x of text){
+//					console.log(x);
 					if (x.split("<TD>").length>1&&x.split("<TD>")[x.split("<TD>").length-1].split(" ")[1]=='Board'&&x.split("<TD>")[x.split("<TD>").length-1].split(" ")[2]=='size:'){
 						window.x_glob=x.split("<TD>")[x.split("<TD>").length-1].split(" ")[3];
 						window.y_glob=x.split("<TD>")[x.split("<TD>").length-1].split(" ")[4];
