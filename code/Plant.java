@@ -28,9 +28,10 @@ public class Plant extends SimProcess {
 	private Position growthpoint;
 	private ArrayList<Resource> connectedresources;
 	private Model owner;
+	public int plant_no;
 
 
-	public Plant(double fitness_func,double agressiveness,double growth_rate,double resource_conswater,double resource_consiron,double resource_consnitro, int maturity, double mutation,Position pos, Model owner, String name, boolean showInTrace){
+	public Plant(double fitness_func,double agressiveness,double growth_rate,double resource_conswater,double resource_consiron,double resource_consnitro, int maturity, double mutation,Position pos, Model owner, String name, boolean showInTrace, int num){
 		super(owner,name,showInTrace);
 		this.owner = owner;
 		this.simulation=(LaunchSimulation)owner;
@@ -51,7 +52,7 @@ public class Plant extends SimProcess {
 		this.positions.add(pos);
 		this.origin=pos;
 		this.growthpoint = this.origin;
-
+		this.plant_no=num;
 	}
 
 	public Position Searchfor(int type){
@@ -197,7 +198,7 @@ public class Plant extends SimProcess {
 				sendTraceNote("Trace Note");
 				hold(new TimeSpan(1, TimeUnit.MINUTES));
 		}
-			// need to add maturity and growth up
+			// need to add maturity and growth up, add death and removing of postions on board, add repoducing and next generation
 
 		
 	}
@@ -265,7 +266,6 @@ public class Plant extends SimProcess {
 		else{
 			return growthpoint;
 		}
-
 			// it found no possible growthpoints
 		}
 	}
