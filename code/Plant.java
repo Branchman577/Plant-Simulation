@@ -197,7 +197,7 @@ public class Plant extends SimProcess {
 				sendTraceNote("Trace Note");
 				hold(new TimeSpan(1, TimeUnit.MINUTES));
 		}
-			// need to add maturity and growth up
+			// need to add maturity and growth up, add death and removing of postions on board, add repoducing and next generation
 
 		
 	}
@@ -265,7 +265,6 @@ public class Plant extends SimProcess {
 		else{
 			return growthpoint;
 		}
-
 			// it found no possible growthpoints
 		}
 	}
