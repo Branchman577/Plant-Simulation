@@ -16,8 +16,8 @@ function generate_board(data){
 	canvas.height=window.innerHeight;
 	const renderer = new THREE.WebGLRenderer({canvas});
 	console.log("generated canvas");
-	var max_y=parseInt(window.y_glob);
-	var max_x=parseInt(window.x_glob);
+	var max_y=parseInt(window.y_glob)+1;
+	var max_x=parseInt(window.x_glob)+1;
 	window.camera = new THREE.PerspectiveCamera(90, window.innerWidth/window.innerHeight, 1, 1000); 
 	console.log("generated camera");
 	camera.position.z=Math.sqrt(Math.pow((Math.max(max_x,max_y+2)/(2*Math.cos(45))),2)-((Math.pow(Math.max(max_x,max_y+2),2)/2)));
@@ -63,12 +63,11 @@ function generate_board(data){
 		root.position.y=y;
 		root.position.z=1;
 	}
-	displayCube(background_soil,0x301a05,Math.floor((max_x/2)),Math.floor((max_y+2)/2),0,-1);
-	displayCube(background_sky,0x445555,Math.floor(max_x/2),Math.floor(max_y+1),0);
+	displayCube(background_soil,0x301a05,(max_x/2),(max_y+2)/2,0,-1);
+	displayCube(background_sky,0x445555,max_x/2,max_y+1,0);
 	var x_pos=0;
-	var y_pos=data.length-3;
+	var y_pos=data.length-1;
 	var y_counter=0;
-	var resourceList=["Water","Nitro"];
 	for (layer of data){
 		x_pos=0;
 		for(object of layer.split('||')){
@@ -83,7 +82,7 @@ function generate_board(data){
 					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos-0.5,y_pos);
 				}
 				else if	(checkIfRoot(data, x_pos,y_counter+1,object)&&checkIfRoot(data, x_pos+1,y_counter,object)&&checkIfRoot(data, x_pos-1,y_counter,object)){//checks below,left,right
-					displayRoot(root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos-0.4);
+					displayRoot(root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos+0.4);
 					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos+0.5,y_pos);
 					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos-0.5,y_pos);
 				}
@@ -95,10 +94,10 @@ function generate_board(data){
 				else if	(checkIfRoot(data, x_pos,y_counter+1,object)&&checkIfRoot(data, x_pos-1,y_counter,object)&&checkIfRoot(data, x_pos,y_counter-1,object)){//checks below,left,above
 					displayRoot(root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos-0.4);
 					displayRoot(root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos+0.5);
-					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos+0.5,y_pos);
+					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos-0.5,y_pos);
 				}
 				else if	(checkIfRoot(data, x_pos,y_counter-1,object)&&checkIfRoot(data, x_pos+1,y_counter,object)&&checkIfRoot(data, x_pos-1,y_counter,object)){//checks above,left,right
-					displayRoot(root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos-0.4);
+					displayRoot(root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos+0.4);
 					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos+0.5,y_pos);
 					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos-0.5,y_pos);
 				}
@@ -135,7 +134,7 @@ function generate_board(data){
 			else if (object[0]=='I'){
 				displayCircle(circle_geo,0xffcf00,x_pos,y_pos);
 			}
-			else if (object[0]=='R'){
+			else if (object[0]=='S'){
 				displayCircle(circle_geo,0x5f5750,x_pos,y_pos);
 			}
 
