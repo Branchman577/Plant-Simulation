@@ -73,16 +73,20 @@ public class Plant extends SimProcess {
 		needtocheck.add(new Position(y,x-1));
 		needtocheck.add(new Position(y,x+1));
 		//add the first 4 immediate positions around the edgepoint
+		System.out.println(needtocheck);
 		
-		int maxchecks = this.simulation.board.Getx()*this.simulation.board.Gety();
-		int numchecks = 0;
-		while(needtocheck.size()>0 && numchecks < maxchecks){
+		//int maxchecks = this.simulation.board.Getx()*this.simulation.board.Gety();
+		//int numchecks = 0;
+		while(needtocheck.size()>0 ){//&& numchecks < maxchecks
 			Position checkpos = needtocheck.get(0);
+			System.out.println(needtocheck);
 			needtocheck.remove(0);
+			System.out.println(needtocheck);
+
 			int checkx = checkpos.Getx();
 			int checky = checkpos.Gety();
 
-		 	if( (checky > 1 && checky < this.simulation.board.Gety()) && (checkx > 0 && checkx < this.simulation.board.Getx()) ){
+		 	if(this.simulation.board.validpos(checkpos)){
 
 		 		if((bb[checky][checkx] instanceof Resource)){
 		 			if (!(connectedresources.contains(bb[checky][checkx])) ){
@@ -95,24 +99,110 @@ public class Plant extends SimProcess {
 		 			}
 		 		}
 		 		alreadychecked.add(checkpos);
-		 		Position pos1 = new Position(checky-1,checkx);
-		 		Position pos2 = new Position(checky+1,checkx);
-		 		Position pos3 = new Position(checky,checkx-1);
-		 		Position pos4 = new Position(checky,checkx+1);
-		 		if ( !alreadychecked.contains(pos1) && !needtocheck.contains(pos1))
-		 			needtocheck.add(pos1);
-		 		if ( !alreadychecked.contains(pos2) && !needtocheck.contains(pos2))
-		 			needtocheck.add(pos2);
-		 		if ( !alreadychecked.contains(pos3) && !needtocheck.contains(pos3))
-		 			needtocheck.add(pos3);
-		 		if ( !alreadychecked.contains(pos4) && !needtocheck.contains(pos4))
-		 			needtocheck.add(pos4);
-		 	numchecks += 1;
+	 		Position pos1 = new Position(checky-1,checkx);
+	 		Position pos2 = new Position(checky+1,checkx);
+	 		Position pos3 = new Position(checky,checkx-1);
+	 		Position pos4 = new Position(checky,checkx+1);
 
-		 	} 
-		}
+	 		boolean foundflag = false;
+	 		for ( Position posboi : needtocheck ) {
+	 			if(posboi.Gety() == pos1.Gety() && posboi.Getx() == pos1.Getx()){
+	 				foundflag = true;
+	 				break;
+	 			}
+ 			for (Position posboi2 : alreadychecked ) {
+ 				if (foundflag == true) {
+ 					break;	
+ 				}
+ 					if(posboi.Gety() == pos1.Gety() && posboi.Getx() == pos1.Getx()){
+ 						foundflag = true;
+ 						break;
+ 					}
+ 						
+ 				}
+	 		}
+	 		if (foundflag == false) {
+	 			needtocheck.add(pos1);
+	 		}
+	 		foundflag = false;
+
+	 		for ( Position posboi : needtocheck ) {
+	 			if(posboi.Gety() == pos2.Gety() && posboi.Getx() == pos2.Getx()){
+	 				foundflag = true;
+	 				break;
+	 			}
+ 			for (Position posboi2 : alreadychecked ) {
+ 				if (foundflag == true) {
+ 					break;	
+ 				}
+ 					if(posboi.Gety() == pos2.Gety() && posboi.Getx() == pos2.Getx()){
+ 						foundflag = true;
+ 						break;
+ 					}
+ 						
+ 				}
+	 		}
+	 		if (foundflag == false) {
+	 			needtocheck.add(pos2);
+	 		}
+	 		foundflag = false;
+
+	 		for ( Position posboi : needtocheck ) {
+	 			if(posboi.Gety() == pos3.Gety() && posboi.Getx() == pos3.Getx()){
+	 				foundflag = true;
+	 				break;
+	 			}
+ 			for (Position posboi2 : alreadychecked ) {
+ 				if (foundflag == true) {
+ 					break;	
+ 				}
+ 					if(posboi.Gety() == pos3.Gety() && posboi.Getx() == pos3.Getx()){
+ 						foundflag = true;
+ 						break;
+ 					}
+ 						
+ 				}
+	 		}
+	 		if (foundflag == false) {
+	 			needtocheck.add(pos3);
+	 		}
+	 		foundflag = false;
+
+	 		for ( Position posboi : needtocheck ) {
+	 			if(posboi.Gety() == pos4.Gety() && posboi.Getx() == pos4.Getx()){
+	 				foundflag = true;
+	 				break;
+	 			}
+ 			for (Position posboi2 : alreadychecked ) {
+ 				if (foundflag == true) {
+ 					break;	
+ 				}
+ 					if(posboi.Gety() == pos4.Gety() && posboi.Getx() == pos4.Getx()){
+ 						foundflag = true;
+ 						break;
+ 					}
+ 						
+ 				}
+	 		}
+	 		if (foundflag == false) {
+	 			needtocheck.add(pos4);
+	 		}
+	 		foundflag = false;
+	 		//if (!needtocheck.contains(pos1)!alreadychecked.contains(pos1) && 	
+	 		//if (!needtocheck.contains(pos2))needtocheck.add(pos2);
+	 		//if (!needtocheck.contains(pos3))needtocheck.add(pos3);
+	 		//if (!needtocheck.contains(pos4))needtocheck.add(pos4);
+
+	 		System.out.println(needtocheck);
+		 	//numchecks += 1;
+		 	}
+	 		
+
+		 }
 		return edgepoint; // returns chosen edgepoint if it fails
 	}
+
+
 
 	public boolean Resourcechecker(int t, Resource re){
 		if(t == re.gettype())
