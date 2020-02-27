@@ -79,9 +79,7 @@ public class Plant extends SimProcess {
 		//int numchecks = 0;
 		while(needtocheck.size()>0 ){//&& numchecks < maxchecks
 			Position checkpos = needtocheck.get(0);
-			System.out.println(needtocheck);
 			needtocheck.remove(0);
-			System.out.println(needtocheck);
 
 			int checkx = checkpos.Getx();
 			int checky = checkpos.Gety();
@@ -192,8 +190,6 @@ public class Plant extends SimProcess {
 	 		//if (!needtocheck.contains(pos2))needtocheck.add(pos2);
 	 		//if (!needtocheck.contains(pos3))needtocheck.add(pos3);
 	 		//if (!needtocheck.contains(pos4))needtocheck.add(pos4);
-
-	 		System.out.println(needtocheck);
 		 	//numchecks += 1;
 		 	}
 	 		
