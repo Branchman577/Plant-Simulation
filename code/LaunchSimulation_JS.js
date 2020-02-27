@@ -36,7 +36,10 @@ function generate_board(data){
 	const background_sky = new THREE.BoxGeometry(max_x,2,1);
 	const root_geo_ver = new THREE.BoxGeometry(0.2,1,0.000000000000001);
 	const root_geo_hor = new THREE.BoxGeometry(1,0.2,0.000000000000001);
+	const half_root_geo_ver = new THREE.BoxGeometry(0.2,0.5,0.000000000000001);
+	const half_root_geo_hor = new THREE.BoxGeometry(0.5,0.2,0.000000000000001);
 	const circle_geo = new THREE.CircleGeometry(0.5,64);
+	const rock_geo = new THREE.BoxGeometry(1,1,2);
 	console.log("generated BoxGeometry");
 	function displayCube(geometry, color, x,y,z){
 		const mat = new THREE.MeshPhongMaterial({color})
@@ -76,46 +79,46 @@ function generate_board(data){
 			}
 			else if (object[0]=='R'){
 				if	(checkIfRoot(data, x_pos,y_counter+1,object)&&checkIfRoot(data, x_pos+1,y_counter,object)&&checkIfRoot(data, x_pos-1,y_counter,object)&&checkIfRoot(data, x_pos,y_counter-1,object)){
-					displayRoot(root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos-0.4);
-					displayRoot(root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos+0.5);
-					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos+0.5,y_pos);
-					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos-0.5,y_pos);
+					displayRoot(half_root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos+0.25);
+					displayRoot(half_root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos-0.25);
+					displayRoot(half_root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos+0.25,y_pos);
+					displayRoot(half_root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos-0.25,y_pos);
 				}
-				else if	(checkIfRoot(data, x_pos,y_counter+1,object)&&checkIfRoot(data, x_pos+1,y_counter,object)&&checkIfRoot(data, x_pos-1,y_counter,object)){//checks below,left,right
-					displayRoot(root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos+0.4);
-					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos+0.5,y_pos);
-					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos-0.5,y_pos);
+				else if	(checkIfRoot(data, x_pos,y_counter+1,object)&&checkIfRoot(data, x_pos+1,y_counter,object)&&checkIfRoot(data, x_pos-1,y_counter,object)){//checks below,right,left
+					displayRoot(half_root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos-0.25);
+					displayRoot(half_root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos+0.25,y_pos);
+					displayRoot(half_root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos-0.25,y_pos);
 				}
 				else if	(checkIfRoot(data, x_pos,y_counter+1,object)&&checkIfRoot(data, x_pos+1,y_counter,object)&&checkIfRoot(data, x_pos,y_counter-1,object)){//checks below,right,above
-					displayRoot(root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos-0.4);
-					displayRoot(root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos+0.5);
-					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos+0.5,y_pos);
+					displayRoot(half_root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos-0.25);
+					displayRoot(half_root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos+0.25);
+					displayRoot(half_root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos+0.25,y_pos);
 				}
 				else if	(checkIfRoot(data, x_pos,y_counter+1,object)&&checkIfRoot(data, x_pos-1,y_counter,object)&&checkIfRoot(data, x_pos,y_counter-1,object)){//checks below,left,above
+					displayRoot(half_root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos-0.25);
+					displayRoot(half_root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos+0.25);
+					displayRoot(half_root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos-0.25,y_pos);
+				}
+				else if	(checkIfRoot(data, x_pos,y_counter-1,object)&&checkIfRoot(data, x_pos+1,y_counter,object)&&checkIfRoot(data, x_pos-1,y_counter,object)){//checks above,right,left
+					displayRoot(half_root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos+0.25);
+					displayRoot(half_root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos+0.25,y_pos);
+					displayRoot(half_root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos-0.25,y_pos);
+				}
+				else if	(checkIfRoot(data, x_pos,y_counter+1,object)&&checkIfRoot(data, x_pos+1,y_counter,object)){//checks below and right
 					displayRoot(root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos-0.4);
-					displayRoot(root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos+0.5);
-					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos-0.5,y_pos);
+					displayRoot(half_root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos+0.3,y_pos);
 				}
-				else if	(checkIfRoot(data, x_pos,y_counter-1,object)&&checkIfRoot(data, x_pos+1,y_counter,object)&&checkIfRoot(data, x_pos-1,y_counter,object)){//checks above,left,right
+				else if	(checkIfRoot(data, x_pos,y_counter-1,object)&&checkIfRoot(data, x_pos+1,y_counter,object)){//checks above,right
 					displayRoot(root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos+0.4);
-					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos+0.5,y_pos);
-					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos-0.5,y_pos);
+					displayRoot(half_root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos+0.3,y_pos);
 				}
-				else if	(checkIfRoot(data, x_pos,y_counter+1,object)&&checkIfRoot(data, x_pos+1,y_counter,object)){//original if statements
+				else if	(checkIfRoot(data, x_pos,y_counter+1,object)&&checkIfRoot(data, x_pos-1,y_counter,object)){//checks below,left
 					displayRoot(root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos-0.4);
-					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos+0.5,y_pos);
+					displayRoot(half_root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos-0.3,y_pos);
 				}
-				else if	(checkIfRoot(data, x_pos,y_counter-1,object)&&checkIfRoot(data, x_pos+1,y_counter,object)){
+				else if	(checkIfRoot(data, x_pos,y_counter-1,object)&&checkIfRoot(data, x_pos-1,y_counter,object)){//checks above,left
 					displayRoot(root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos+0.4);
-					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos+0.5,y_pos);
-				}
-				else if	(checkIfRoot(data, x_pos,y_counter+1,object)&&checkIfRoot(data, x_pos-1,y_counter,object)){
-					displayRoot(root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos-0.4);
-					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos-0.5,y_pos);
-				}
-				else if	(checkIfRoot(data, x_pos,y_counter-1,object)&&checkIfRoot(data, x_pos-1,y_counter,object)){
-					displayRoot(root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos+0.4);
-					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos-0.5,y_pos);
+					displayRoot(half_root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos-0.3,y_pos);
 				}
 
 				else if(checkIfRoot(data, x_pos,y_counter+1,object)||(checkIfRoot(data, x_pos,y_counter-1,object))){//y+1 and y-1			
@@ -136,6 +139,7 @@ function generate_board(data){
 			}
 			else if (object[0]=='S'){
 				displayCircle(circle_geo,0x5f5750,x_pos,y_pos);
+//				displayCube(rock_geo,0x5f5750,x_pos,y_pos,0);
 			}
 
 			x_pos=x_pos+1;

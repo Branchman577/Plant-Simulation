@@ -5,8 +5,8 @@ import java.util.concurrent.TimeUnit;
 
 public class LaunchSimulation extends Model{
 	public Board board;
-	public int size_x=10;
-	public int size_y=9;
+	public int size_x=15;
+	public int size_y=15;
 	public int noplant=3;
 	public LaunchSimulation(Model owner, String Name, boolean showInReport, boolean showInTrace){
 		super(owner, Name, showInReport, showInTrace);
@@ -21,7 +21,7 @@ public class LaunchSimulation extends Model{
 		//set how long the simulation will run for
 		exp.stop(new TimeInstant(1500, TimeUnit.MINUTES));
 		//set how long the debug and trace files will be recorded for
-		exp.tracePeriod(new TimeInstant(0), new TimeInstant(100, TimeUnit.MINUTES));
+		exp.tracePeriod(new TimeInstant(0), new TimeInstant(1500, TimeUnit.MINUTES));
 		exp.debugPeriod(new TimeInstant(0), new TimeInstant(50, TimeUnit.MINUTES));
 		exp.start();
 		exp.report();

@@ -40,6 +40,7 @@ public class Board extends SimProcess{
 				if ((plantprob >=1 || Math.random()< plantprob) && plantcount != 0){
 					double mat = Math.random() * 20 + 1;
 					int matt = (int)(mat) + 10;
+					matt=5;
 					Position pos = new Position(i,j);
 					returnarray[i][j] =  new Plant(Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),matt, Math.random(),pos,name, "Plant", true,x );
 					plantcount -= 1;
@@ -120,7 +121,7 @@ public class Board extends SimProcess{
 		return((Math.abs(growthpoint.Getx()-growto.Getx()))+Math.abs((growthpoint.Gety()-growto.Gety())));
 	}
 	public boolean validpos(Position checkpos){
-		return ( ( (checkpos.Getx() >=0) && (checkpos.Getx() <= this.sizex) ) && ( (checkpos.Gety()>=2) && (checkpos.Gety() <= this.sizey) ) );
+		return ( ( (checkpos.Getx() >=0) && (checkpos.Getx() < this.sizex) ) && ( (checkpos.Gety()>=2) && (checkpos.Gety() < this.sizey) ) );
 	}
 	public void lifeCycle() throws SuspendExecution{
 
