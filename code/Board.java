@@ -120,7 +120,7 @@ public class Board extends SimProcess{
 		return((Math.abs(growthpoint.Getx()-growto.Getx()))+Math.abs((growthpoint.Gety()-growto.Gety())));
 	}
 	public boolean validpos(Position checkpos){
-		return ( ( (checkpos.Getx() >=0) && (checkpos.Getx() <= this.sizex) ) && ( (checkpos.Gety()>=2) && (checkpos.Gety() <= this.sizey) ) );
+		return ( ( (checkpos.Getx() >=0) && (checkpos.Getx() < this.sizex) ) && ( (checkpos.Gety()>=2) && (checkpos.Gety() < this.sizey) ) );
 	}
 	public void lifeCycle() throws SuspendExecution{
 

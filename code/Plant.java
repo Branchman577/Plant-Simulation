@@ -198,9 +198,12 @@ public class Plant extends SimProcess {
 				sendTraceNote("Trace Note");
 				hold(new TimeSpan(1, TimeUnit.MINUTES));
 		}
+		sendTraceNote("Plant has died");
+		for (Position posdel : this.positions) {
+			this.simulation.board.boardboi[posdel.Gety()][posdel.Getx()] = null;
+			
 			// need to add maturity and growth up, add death and removing of postions on board, add repoducing and next generation
-
-		
+		}
 	}
 	public void consumeresources(){
 		if (connectedresources.size() > 1) {
@@ -241,7 +244,7 @@ public class Plant extends SimProcess {
 		possiblegrowth.add(new Position(growthpointy,growthpointx-1));
 
 		while (possiblegrowth.size() != 0){
-			int num = (int)(Math.random() * ((possiblegrowth.size()-1)));//number between 0-3 inclusive
+			int num = (int)(Math.random() * ((possiblegrowth.size())));//number between 0-3 inclusive
 			Position check = possiblegrowth.get(num);
 
 			if( simulation.board.validpos(check) && (!(simulation.board.boardboi[check.Gety()][check.Getx()] instanceof Resource) && !(simulation.board.boardboi[check.Gety()][check.Getx()] instanceof Plant)) && (!(simulation.board.boardboi[check.Gety()][check.Getx()] instanceof Root))){
@@ -260,7 +263,7 @@ public class Plant extends SimProcess {
 		}
 		//no choice is shorter but are still valid points not taken up
 		if(possiblegrowthcheckedlonger.size()>0){
-			return possiblegrowthcheckedlonger.get((int)(Math.random() * ((possiblegrowthcheckedlonger.size()-1))));
+			return possiblegrowthcheckedlonger.get((int)(Math.random() * ((possiblegrowthcheckedlonger.size()))));
 		}
 			
 		else{

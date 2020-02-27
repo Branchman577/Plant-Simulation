@@ -5,8 +5,8 @@ import java.util.concurrent.TimeUnit;
 
 public class LaunchSimulation extends Model{
 	public Board board;
-	public int size_x=10;
-	public int size_y=9;
+	public int size_x=15;
+	public int size_y=15;
 	public int noplant=3;
 	public LaunchSimulation(Model owner, String Name, boolean showInReport, boolean showInTrace){
 		super(owner, Name, showInReport, showInTrace);
