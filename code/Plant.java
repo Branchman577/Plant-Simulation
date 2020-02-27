@@ -73,7 +73,6 @@ public class Plant extends SimProcess {
 		needtocheck.add(new Position(y,x-1));
 		needtocheck.add(new Position(y,x+1));
 		//add the first 4 immediate positions around the edgepoint
-		System.out.println(needtocheck);
 		
 		//int maxchecks = this.simulation.board.Getx()*this.simulation.board.Gety();
 		//int numchecks = 0;
@@ -269,8 +268,13 @@ public class Plant extends SimProcess {
 				else{
 					if(simulation.board.distance(this.growthpoint,growto) >1){
 						Position growthchoice= growthdirection(this.growthpoint,growto);
-						if(growthchoice != growthpoint)
+						if(growthchoice != growthpoint){
 							Grow(growthchoice);
+						}
+						else{
+							growthflag = false;
+							searchflag =true;							
+						}
 					}
 					else{
 						connectedresources.add((Resource)this.simulation.board.boardboi[growto.Gety()][growto.Getx()]);
