@@ -24,6 +24,7 @@ public class Plant extends SimProcess {
 	private int typeflag = 1;
 	private boolean growthflag = false;
 	private boolean searchflag = true;
+	private boolean sexiflag = false;
 	private Position growto;
 	private Position growthpoint;
 	private ArrayList<Resource> connectedresources;
@@ -132,7 +133,7 @@ public class Plant extends SimProcess {
 			this.positions.add(posg);
 			bb[y][x] = new Root(this,posg,this.owner, "Root", false);
 			this.growthpoint = posg;
-			sendTraceNote("Made root at position" + " " + this.growthpoint);
+			sendTraceNote("Made root at position " + this.growthpoint);
 			//return true;
 		//}
 		//return false;
@@ -151,7 +152,8 @@ public class Plant extends SimProcess {
 		Board board = simulation.board;
 		connectedresources = new ArrayList<Resource>();
 		Position resourceboi = Searchfor(lowestresource());
-
+		int age=0;
+		Position skyPoint = new Position(origin.Getx(),0);
 		if(positions.contains(resourceboi)){
 			sendTraceNote("Resource not found");
 		}
@@ -159,48 +161,78 @@ public class Plant extends SimProcess {
 			sendTraceNote("Resource is at "+resourceboi.Gety()+ " "+resourceboi.Getx());
 			growthflag = true;
 			searchflag = false;
+			sexiflag=false;
 			this.growto = resourceboi;
 		}
 	
-		while( (this.water> this.resourceconw * this.positions.size()&& this.iron>this.resourceconi * this.positions.size()) && this.nitro>this.resourceconn * this.positions.size()){
+		while( (this.water> this.resourceconw * this.positions.size()&& this.iron>this.resourceconi * this.positions.size()) && this.nitro>this.resourceconn * this.positions.size()&&(age<(maturity+10))){
 			this.water =  this.water - (this.resourceconw * this.positions.size());
 			this.iron = this.iron - (this.resourceconi * this.positions.size());
 			this.nitro = this.nitro -(this.resourceconn * this.positions.size());
-				if(searchflag == true){
-
-					resourceboi = Searchfor(lowestresource());
-					if(positions.contains(resourceboi)){
-						sendTraceNote("Resource not found");
+			if(age>=maturity&&searchflag==true){
+				int maxY=this.simulation.board.sizey;
+				Position firstPoint=new Position(this.positions.get(0).Getx(),this.positions.get(0).Gety());
+				if(sexiflag==false){
+					for(Position growthPlace:this.positions){
+						if(growthPlace.Gety()<maxY){
+							maxY=growthPlace.Gety();
+							firstPoint=growthPlace;
+						}
 					}
-					else{
-						sendTraceNote("Resource is at "+resourceboi.Gety()+ " "+resourceboi.Getx());
-						growthflag = true;
-						searchflag = false;
-						this.growto = resourceboi;
+					sexiflag=true;
+
+					Position growthChoice = growthdirection(firstPoint, skyPoint);
+					if(growthChoice!= firstPoint){
+						Grow(growthChoice);
 					}
 
 				}
 				else{
-					if(simulation.board.distance(this.growthpoint,growto) >1){
-						Position growthchoice= growthdirection(this.growthpoint,growto);
-						if(growthchoice != growthpoint)
-							Grow(growthchoice);
+					Position growthChoice = growthdirection(growthpoint, skyPoint);
+					if(growthChoice!=growthpoint){
+						Grow(growthChoice);
 					}
-					else{
-						connectedresources.add((Resource)this.simulation.board.boardboi[growto.Gety()][growto.Getx()]);
-						growthflag = false;
-						searchflag = true;
+				}
+
+			}
+			else if(searchflag == true){
+				resourceboi = Searchfor(lowestresource());
+				if(positions.contains(resourceboi)){
+					sendTraceNote("Resource not found");
+				}
+				else{
+					sendTraceNote("Resource is at "+resourceboi.Gety()+ " "+resourceboi.Getx());
+					growthflag = true;
+					searchflag = false;
+					this.growto = resourceboi;
 					}
 
 				}
-				consumeresources();		
-				System.out.println(presentTime());
-				sendTraceNote("Trace Note");
-				hold(new TimeSpan(1, TimeUnit.MINUTES));
-		}
-			// need to add maturity and growth up, add death and removing of postions on board, add repoducing and next generation
+			else{
+				if(simulation.board.distance(this.growthpoint,growto) >1){
+					Position growthchoice= growthdirection(this.growthpoint,growto);
+					if(growthchoice != growthpoint)
+						Grow(growthchoice);
+				}
+				else{
+					connectedresources.add((Resource)this.simulation.board.boardboi[growto.Gety()][growto.Getx()]);
+					growthflag = false;
+					searchflag = true;
+				}
 
-		
+			}
+			consumeresources();		
+			System.out.println(presentTime());
+			sendTraceNote("Trace Note");
+			age++;
+			hold(new TimeSpan(1, TimeUnit.MINUTES));
+		}
+		sendTraceNote("Plant has died");
+		for (Position posdel : this.positions) {
+			this.simulation.board.boardboi[posdel.Gety()][posdel.Getx()] = null;
+			
+			// need to add maturity and growth up, add death and removing of postions on board, add repoducing and next generation
+		}
 	}
 	public void consumeresources(){
 		if (connectedresources.size() > 1) {
@@ -241,7 +273,7 @@ public class Plant extends SimProcess {
 		possiblegrowth.add(new Position(growthpointy,growthpointx-1));
 
 		while (possiblegrowth.size() != 0){
-			int num = (int)(Math.random() * ((possiblegrowth.size()-1)));//number between 0-3 inclusive
+			int num = (int)(Math.random() * ((possiblegrowth.size())));//number between 0-3 inclusive
 			Position check = possiblegrowth.get(num);
 
 			if( simulation.board.validpos(check) && (!(simulation.board.boardboi[check.Gety()][check.Getx()] instanceof Resource) && !(simulation.board.boardboi[check.Gety()][check.Getx()] instanceof Plant)) && (!(simulation.board.boardboi[check.Gety()][check.Getx()] instanceof Root))){
@@ -260,7 +292,7 @@ public class Plant extends SimProcess {
 		}
 		//no choice is shorter but are still valid points not taken up
 		if(possiblegrowthcheckedlonger.size()>0){
-			return possiblegrowthcheckedlonger.get((int)(Math.random() * ((possiblegrowthcheckedlonger.size()-1))));
+			return possiblegrowthcheckedlonger.get((int)(Math.random() * ((possiblegrowthcheckedlonger.size()))));
 		}
 			
 		else{
@@ -269,3 +301,4 @@ public class Plant extends SimProcess {
 			// it found no possible growthpoints
 		}
 	}
+
