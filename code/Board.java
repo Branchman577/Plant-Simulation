@@ -41,7 +41,7 @@ public class Board extends SimProcess{
 					double mat = Math.random() * 20 + 1;
 					int matt = (int)(mat) + 10;
 					Position pos = new Position(i,j);
-					returnarray[i][j] =  new Plant(Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),matt, Math.random(),pos,name, "Plant", true,x );
+					returnarray[i][j] =  new Plant(Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),matt, Math.random(),pos,name, "Plant", true,x );
 					plantcount -= 1;
 					x++;
 //					returnarray[i][j].activate();
@@ -121,6 +121,9 @@ public class Board extends SimProcess{
 	}
 	public boolean validpos(Position checkpos){
 		return ( ( (checkpos.Getx() >=0) && (checkpos.Getx() < this.sizex) ) && ( (checkpos.Gety()>=2) && (checkpos.Gety() < this.sizey) ) );
+	}
+	public boolean validposgrowup(Position checkpos){
+		return ( ( (checkpos.Getx() >=0) && (checkpos.Getx() < this.sizex) ) && ( (checkpos.Gety()>=0) && (checkpos.Gety() < this.sizey) ) );
 	}
 	public void lifeCycle() throws SuspendExecution{
 

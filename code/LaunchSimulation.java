@@ -21,7 +21,7 @@ public class LaunchSimulation extends Model{
 		//set how long the simulation will run for
 		exp.stop(new TimeInstant(1500, TimeUnit.MINUTES));
 		//set how long the debug and trace files will be recorded for
-		exp.tracePeriod(new TimeInstant(0), new TimeInstant(1500, TimeUnit.MINUTES));
+		exp.tracePeriod(new TimeInstant(0), new TimeInstant(100, TimeUnit.MINUTES));
 		exp.debugPeriod(new TimeInstant(0), new TimeInstant(50, TimeUnit.MINUTES));
 		exp.start();
 		exp.report();

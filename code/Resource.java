@@ -33,8 +33,12 @@ public class Resource extends SimProcess{
 	public double getcap(){
 		return this.capacity;
 	}
-	public void consume(double amount){
-		this.capacity -= amount;
+	public boolean consume(double amount){
+		if(this.capacity>0){
+			this.capacity -= amount;
+			return true;
+		}
+		return false;
 	}
 	public int gettype(){
 		return this.typeflag;
