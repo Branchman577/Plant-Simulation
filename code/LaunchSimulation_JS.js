@@ -202,7 +202,8 @@ function main(){
 				}
 			})
 			.then(function(){
-				var slider_config='<input type="range" min="1" max="'+Math.floor(window.state_list/2).length+'" value="1" class="slider" id="myRange">';
+
+				var slider_config='<input type="range" min="1" max="1500" value="1" class="slider" id="myRange">';
 				document.getElementById('slideContainer').innerHTML = slider_config
 				window.slider = document.getElementById('myRange');
 				window.output = document.getElementById('displayValue');

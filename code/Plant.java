@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 public class Plant extends SimProcess {
 
-	public double fitness;
 	public double agress;
 	public double growth;
 	public double resourceconw;
@@ -31,11 +30,10 @@ public class Plant extends SimProcess {
 	public int plant_no;
 
 
-	public Plant(double fitness_func,double agressiveness,double growth_rate,double resource_conswater,double resource_consiron,double resource_consnitro, int maturity, double mutation,Position pos, Model owner, String name, boolean showInTrace, int num){
+	public Plant(double agressiveness,double growth_rate,double resource_conswater,double resource_consiron,double resource_consnitro, int maturity, double mutation,Position pos, Model owner, String name, boolean showInTrace, int num){
 		super(owner,name,showInTrace);
 		this.owner = owner;
 		this.simulation=(LaunchSimulation)owner;
-		this.fitness = fitness_func;
 		this.agress = agressiveness;
 		this.growth = growth_rate;
 		this.resourceconw = resource_conswater;
@@ -283,12 +281,14 @@ public class Plant extends SimProcess {
 					}
 
 				}
-				consumeresources();		
+				consumeresources();	
+	
 				System.out.println(presentTime());
 				sendTraceNote("Trace Note");
 				hold(new TimeSpan(1, TimeUnit.MINUTES));
 		}
 		sendTraceNote("Plant has died");
+		System.out.println(plant_no+" "+fitness()+" "+agress+" "+(((fitness()+agress)/2))+" "+newSeedlingPlace(this.origin));
 		for (Position posdel : this.positions) {
 			this.simulation.board.boardboi[posdel.Gety()][posdel.Getx()] = null;
 			
@@ -361,4 +361,56 @@ public class Plant extends SimProcess {
 		}
 			// it found no possible growthpoints
 		}
+	
+	public ArrayList<Plant> generateSeedlings(Plant plant2){
+		ArrayList<Plant> seedlings = new ArrayList<Plant>();
+		double numberOfSeeds= Math.floor(2*fitness());
+		double carryOverFactP1= ((fitness()+agress)/2);
+		double carryOverFactP2= ((plant2.fitness()+plant2.agress)/2);
+		double p1Portion = 0.6*carryOverFactP1;
+		double p2Portion = 0.4*carryOverFactP2;
+		double toBeFilled = 1-(p1Portion+p2Portion);
+		if(agress>plant2.agress){p1Portion+=toBeFilled;}
+		else{p2Portion+=toBeFilled;}
+		int i=0;
+		while(i<numberOfSeeds){//Stuff to modify Agressiveness, Growth_Rate, water consump, iron consump, nit consump, maturity, 
+			if(Math.random()<0.05){double newAgress= Math.random();}
+			else{double newAgress= newGeneValue(agress, agress, plant2.agress,plant2.agress);}
+			if(Math.random()<0.05){double newGrowthRate = Math.random();}
+			else{double newGrowthRate = newGeneValue(growth, agress,plant2.growth,plant2.agress);}
+			if(Math.random()<0.05){double newWCons=Math.random();}	
+			else{double newWCons= newGeneValue(resourceconw, agress, plant2.resourceconw,plant2.resourceconw);}
+			if(Math.random()<0.05){double newICons= Math.random();}
+			else{double newICons=newGeneValue(resourceconi, agress,plant2.resourceconw,plant2.agress);}
+			if(Math.random()<0.05){double newNCons = Math.random();}
+			else{double newNCons= newGeneValue(resourceconn, agress,plant2.resourceconn,plant2.agress);}
+			if(Math.random()<0.05){int newMat = (int)(Math.random()*20+1)+10;}
+			else{int newMat = (int)(Math.floor(newGeneValue(maturity, agress,plant2.maturity,plant2.agress)));}
+			Position newOrigin= newSeedlingPlace(this.origin);
+//			simulation.board[y][x]
+			
+			i++;
+		}
+		
+		return seedlings;
 	}
+	public double fitness(){
+		return (this.connectedresources.size()*10)/(this.positions.size()*(this.resourceconw+this.resourceconi+resourceconn));
+	}
+	public double newGeneValue(double v1,double ag1,double v2,double ag2){
+		if(v1>v2){
+			return v2*(1+ag1);
+		}
+		return 	v1*(1+ag2);		
+	}	
+	public Position newSeedlingPlace(Position origin){
+		int newXPos=-1;
+		int newYPos=-1;
+		while((newXPos>=0&&newXPos<simulation.board.sizex-1)&&(newXPos>1&&newYPos<4)&&simulation.board.boardboi[newYPos][newXPos]==null){
+			newXPos = (int)((Math.random()*5+1)+Math.ceil(origin.Getx()/2));
+			newYPos = (int)((Math.random()*2+1));
+		}
+		System.out.println(newXPos+" "+newYPos);
+		return new Position(0,0);
+	}
+}
