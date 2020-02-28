@@ -4,7 +4,6 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 public class Plant extends SimProcess {
 
-	public double fitness;
 	public double agress;
 	public double growth;
 	public double resourceconw;
@@ -24,7 +23,6 @@ public class Plant extends SimProcess {
 	private int typeflag = 1;
 	private boolean growthflag = false;
 	private boolean searchflag = true;
-	private boolean sexiflag = false;
 	private Position growto;
 	private Position growthpoint;
 	private ArrayList<Resource> connectedresources;
@@ -32,11 +30,10 @@ public class Plant extends SimProcess {
 	public int plant_no;
 
 
-	public Plant(double fitness_func,double agressiveness,double growth_rate,double resource_conswater,double resource_consiron,double resource_consnitro, int maturity, double mutation,Position pos, Model owner, String name, boolean showInTrace, int num){
+	public Plant(double agressiveness,double growth_rate,double resource_conswater,double resource_consiron,double resource_consnitro, int maturity, double mutation,Position pos, Model owner, String name, boolean showInTrace, int num){
 		super(owner,name,showInTrace);
 		this.owner = owner;
 		this.simulation=(LaunchSimulation)owner;
-		this.fitness = fitness_func;
 		this.agress = agressiveness;
 		this.growth = growth_rate;
 		this.resourceconw = resource_conswater;
@@ -75,15 +72,16 @@ public class Plant extends SimProcess {
 		needtocheck.add(new Position(y,x+1));
 		//add the first 4 immediate positions around the edgepoint
 		
-		int maxchecks = this.simulation.board.Getx()*this.simulation.board.Gety();
-		int numchecks = 0;
-		while(needtocheck.size()>0 && numchecks < maxchecks){
+		//int maxchecks = this.simulation.board.Getx()*this.simulation.board.Gety();
+		//int numchecks = 0;
+		while(needtocheck.size()>0 ){//&& numchecks < maxchecks
 			Position checkpos = needtocheck.get(0);
 			needtocheck.remove(0);
+
 			int checkx = checkpos.Getx();
 			int checky = checkpos.Gety();
 
-		 	if( (checky > 1 && checky < this.simulation.board.Gety()) && (checkx > 0 && checkx < this.simulation.board.Getx()) ){
+		 	if(this.simulation.board.validpos(checkpos)){
 
 		 		if((bb[checky][checkx] instanceof Resource)){
 		 			if (!(connectedresources.contains(bb[checky][checkx])) ){
@@ -96,24 +94,108 @@ public class Plant extends SimProcess {
 		 			}
 		 		}
 		 		alreadychecked.add(checkpos);
-		 		Position pos1 = new Position(checky-1,checkx);
-		 		Position pos2 = new Position(checky+1,checkx);
-		 		Position pos3 = new Position(checky,checkx-1);
-		 		Position pos4 = new Position(checky,checkx+1);
-		 		if ( !alreadychecked.contains(pos1) && !needtocheck.contains(pos1))
-		 			needtocheck.add(pos1);
-		 		if ( !alreadychecked.contains(pos2) && !needtocheck.contains(pos2))
-		 			needtocheck.add(pos2);
-		 		if ( !alreadychecked.contains(pos3) && !needtocheck.contains(pos3))
-		 			needtocheck.add(pos3);
-		 		if ( !alreadychecked.contains(pos4) && !needtocheck.contains(pos4))
-		 			needtocheck.add(pos4);
-		 	numchecks += 1;
+	 		Position pos1 = new Position(checky-1,checkx);
+	 		Position pos2 = new Position(checky+1,checkx);
+	 		Position pos3 = new Position(checky,checkx-1);
+	 		Position pos4 = new Position(checky,checkx+1);
 
-		 	} 
-		}
+	 		boolean foundflag = false;
+	 		for ( Position posboi : needtocheck ) {
+	 			if(posboi.Gety() == pos1.Gety() && posboi.Getx() == pos1.Getx()){
+	 				foundflag = true;
+	 				break;
+	 			}
+ 			for (Position posboi2 : alreadychecked ) {
+ 				if (foundflag == true) {
+ 					break;	
+ 				}
+ 					if(posboi.Gety() == pos1.Gety() && posboi.Getx() == pos1.Getx()){
+ 						foundflag = true;
+ 						break;
+ 					}
+ 						
+ 				}
+	 		}
+	 		if (foundflag == false) {
+	 			needtocheck.add(pos1);
+	 		}
+	 		foundflag = false;
+
+	 		for ( Position posboi : needtocheck ) {
+	 			if(posboi.Gety() == pos2.Gety() && posboi.Getx() == pos2.Getx()){
+	 				foundflag = true;
+	 				break;
+	 			}
+ 			for (Position posboi2 : alreadychecked ) {
+ 				if (foundflag == true) {
+ 					break;	
+ 				}
+ 					if(posboi.Gety() == pos2.Gety() && posboi.Getx() == pos2.Getx()){
+ 						foundflag = true;
+ 						break;
+ 					}
+ 						
+ 				}
+	 		}
+	 		if (foundflag == false) {
+	 			needtocheck.add(pos2);
+	 		}
+	 		foundflag = false;
+
+	 		for ( Position posboi : needtocheck ) {
+	 			if(posboi.Gety() == pos3.Gety() && posboi.Getx() == pos3.Getx()){
+	 				foundflag = true;
+	 				break;
+	 			}
+ 			for (Position posboi2 : alreadychecked ) {
+ 				if (foundflag == true) {
+ 					break;	
+ 				}
+ 					if(posboi.Gety() == pos3.Gety() && posboi.Getx() == pos3.Getx()){
+ 						foundflag = true;
+ 						break;
+ 					}
+ 						
+ 				}
+	 		}
+	 		if (foundflag == false) {
+	 			needtocheck.add(pos3);
+	 		}
+	 		foundflag = false;
+
+	 		for ( Position posboi : needtocheck ) {
+	 			if(posboi.Gety() == pos4.Gety() && posboi.Getx() == pos4.Getx()){
+	 				foundflag = true;
+	 				break;
+	 			}
+ 			for (Position posboi2 : alreadychecked ) {
+ 				if (foundflag == true) {
+ 					break;	
+ 				}
+ 					if(posboi.Gety() == pos4.Gety() && posboi.Getx() == pos4.Getx()){
+ 						foundflag = true;
+ 						break;
+ 					}
+ 						
+ 				}
+	 		}
+	 		if (foundflag == false) {
+	 			needtocheck.add(pos4);
+	 		}
+	 		foundflag = false;
+	 		//if (!needtocheck.contains(pos1)!alreadychecked.contains(pos1) && 	
+	 		//if (!needtocheck.contains(pos2))needtocheck.add(pos2);
+	 		//if (!needtocheck.contains(pos3))needtocheck.add(pos3);
+	 		//if (!needtocheck.contains(pos4))needtocheck.add(pos4);
+		 	//numchecks += 1;
+		 	}
+	 		
+
+		 }
 		return edgepoint; // returns chosen edgepoint if it fails
 	}
+
+
 
 	public boolean Resourcechecker(int t, Resource re){
 		if(t == re.gettype())
@@ -133,7 +215,7 @@ public class Plant extends SimProcess {
 			this.positions.add(posg);
 			bb[y][x] = new Root(this,posg,this.owner, "Root", false);
 			this.growthpoint = posg;
-			sendTraceNote("Made root at position " + this.growthpoint);
+			sendTraceNote("Made root at position" + " " + this.growthpoint);
 			//return true;
 		//}
 		//return false;
@@ -152,8 +234,7 @@ public class Plant extends SimProcess {
 		Board board = simulation.board;
 		connectedresources = new ArrayList<Resource>();
 		Position resourceboi = Searchfor(lowestresource());
-		int age=0;
-		Position skyPoint = new Position(origin.Getx(),0);
+
 		if(positions.contains(resourceboi)){
 			sendTraceNote("Resource not found");
 		}
@@ -161,73 +242,53 @@ public class Plant extends SimProcess {
 			sendTraceNote("Resource is at "+resourceboi.Gety()+ " "+resourceboi.Getx());
 			growthflag = true;
 			searchflag = false;
-			sexiflag=false;
 			this.growto = resourceboi;
 		}
 	
-		while( (this.water> this.resourceconw * this.positions.size()&& this.iron>this.resourceconi * this.positions.size()) && this.nitro>this.resourceconn * this.positions.size()&&(age<(maturity+10))){
+		while( (this.water> this.resourceconw * this.positions.size()&& this.iron>this.resourceconi * this.positions.size()) && this.nitro>this.resourceconn * this.positions.size()){
 			this.water =  this.water - (this.resourceconw * this.positions.size());
 			this.iron = this.iron - (this.resourceconi * this.positions.size());
 			this.nitro = this.nitro -(this.resourceconn * this.positions.size());
-			if(age>=maturity&&searchflag==true){
-				int maxY=this.simulation.board.sizey;
-				Position firstPoint=new Position(this.positions.get(0).Getx(),this.positions.get(0).Gety());
-				if(sexiflag==false){
-					for(Position growthPlace:this.positions){
-						if(growthPlace.Gety()<maxY){
-							maxY=growthPlace.Gety();
-							firstPoint=growthPlace;
+				if(searchflag == true){
+
+					resourceboi = Searchfor(lowestresource());
+					if(positions.contains(resourceboi)){
+						sendTraceNote("Resource not found");
+					}
+					else{
+						sendTraceNote("Resource is at "+resourceboi.Gety()+ " "+resourceboi.Getx());
+						growthflag = true;
+						searchflag = false;
+						this.growto = resourceboi;
+					}
+
+				}
+				else{
+					if(simulation.board.distance(this.growthpoint,growto) >1){
+						Position growthchoice= growthdirection(this.growthpoint,growto);
+						if(growthchoice != growthpoint){
+							Grow(growthchoice);
+						}
+						else{
+							growthflag = false;
+							searchflag =true;							
 						}
 					}
-					sexiflag=true;
-
-					Position growthChoice = growthdirection(firstPoint, skyPoint);
-					if(growthChoice!= firstPoint){
-						Grow(growthChoice);
+					else{
+						connectedresources.add((Resource)this.simulation.board.boardboi[growto.Gety()][growto.Getx()]);
+						growthflag = false;
+						searchflag = true;
 					}
 
 				}
-				else{
-					Position growthChoice = growthdirection(growthpoint, skyPoint);
-					if(growthChoice!=growthpoint){
-						Grow(growthChoice);
-					}
-				}
-
-			}
-			else if(searchflag == true){
-				resourceboi = Searchfor(lowestresource());
-				if(positions.contains(resourceboi)){
-					sendTraceNote("Resource not found");
-				}
-				else{
-					sendTraceNote("Resource is at "+resourceboi.Gety()+ " "+resourceboi.Getx());
-					growthflag = true;
-					searchflag = false;
-					this.growto = resourceboi;
-					}
-
-				}
-			else{
-				if(simulation.board.distance(this.growthpoint,growto) >1){
-					Position growthchoice= growthdirection(this.growthpoint,growto);
-					if(growthchoice != growthpoint)
-						Grow(growthchoice);
-				}
-				else{
-					connectedresources.add((Resource)this.simulation.board.boardboi[growto.Gety()][growto.Getx()]);
-					growthflag = false;
-					searchflag = true;
-				}
-
-			}
-			consumeresources();		
-			System.out.println(presentTime());
-			sendTraceNote("Trace Note");
-			age++;
-			hold(new TimeSpan(1, TimeUnit.MINUTES));
+				consumeresources();	
+	
+				System.out.println(presentTime());
+				sendTraceNote("Trace Note");
+				hold(new TimeSpan(1, TimeUnit.MINUTES));
 		}
 		sendTraceNote("Plant has died");
+		System.out.println(plant_no+" "+fitness()+" "+agress+" "+(((fitness()+agress)/2))+" "+newSeedlingPlace(this.origin));
 		for (Position posdel : this.positions) {
 			this.simulation.board.boardboi[posdel.Gety()][posdel.Getx()] = null;
 			
@@ -300,5 +361,56 @@ public class Plant extends SimProcess {
 		}
 			// it found no possible growthpoints
 		}
+	
+	public ArrayList<Plant> generateSeedlings(Plant plant2){
+		ArrayList<Plant> seedlings = new ArrayList<Plant>();
+		double numberOfSeeds= Math.floor(2*fitness());
+		double carryOverFactP1= ((fitness()+agress)/2);
+		double carryOverFactP2= ((plant2.fitness()+plant2.agress)/2);
+		double p1Portion = 0.6*carryOverFactP1;
+		double p2Portion = 0.4*carryOverFactP2;
+		double toBeFilled = 1-(p1Portion+p2Portion);
+		if(agress>plant2.agress){p1Portion+=toBeFilled;}
+		else{p2Portion+=toBeFilled;}
+		int i=0;
+		while(i<numberOfSeeds){//Stuff to modify Agressiveness, Growth_Rate, water consump, iron consump, nit consump, maturity, 
+			if(Math.random()<0.05){double newAgress= Math.random();}
+			else{double newAgress= newGeneValue(agress, agress, plant2.agress,plant2.agress);}
+			if(Math.random()<0.05){double newGrowthRate = Math.random();}
+			else{double newGrowthRate = newGeneValue(growth, agress,plant2.growth,plant2.agress);}
+			if(Math.random()<0.05){double newWCons=Math.random();}	
+			else{double newWCons= newGeneValue(resourceconw, agress, plant2.resourceconw,plant2.resourceconw);}
+			if(Math.random()<0.05){double newICons= Math.random();}
+			else{double newICons=newGeneValue(resourceconi, agress,plant2.resourceconw,plant2.agress);}
+			if(Math.random()<0.05){double newNCons = Math.random();}
+			else{double newNCons= newGeneValue(resourceconn, agress,plant2.resourceconn,plant2.agress);}
+			if(Math.random()<0.05){int newMat = (int)(Math.random()*20+1)+10;}
+			else{int newMat = (int)(Math.floor(newGeneValue(maturity, agress,plant2.maturity,plant2.agress)));}
+			Position newOrigin= newSeedlingPlace(this.origin);
+//			simulation.board[y][x]
+			
+			i++;
+		}
+		
+		return seedlings;
 	}
-
+	public double fitness(){
+		return (this.connectedresources.size()*10)/(this.positions.size()*(this.resourceconw+this.resourceconi+resourceconn));
+	}
+	public double newGeneValue(double v1,double ag1,double v2,double ag2){
+		if(v1>v2){
+			return v2*(1+ag1);
+		}
+		return 	v1*(1+ag2);		
+	}	
+	public Position newSeedlingPlace(Position origin){
+		int newXPos=-1;
+		int newYPos=-1;
+		while((newXPos>=0&&newXPos<simulation.board.sizex-1)&&(newXPos>1&&newYPos<4)&&simulation.board.boardboi[newYPos][newXPos]==null){
+			newXPos = (int)((Math.random()*5+1)+Math.ceil(origin.Getx()/2));
+			newYPos = (int)((Math.random()*2+1));
+		}
+		System.out.println(newXPos+" "+newYPos);
+		return new Position(0,0);
+	}
+}

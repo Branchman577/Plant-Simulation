@@ -40,9 +40,8 @@ public class Board extends SimProcess{
 				if ((plantprob >=1 || Math.random()< plantprob) && plantcount != 0){
 					double mat = Math.random() * 20 + 1;
 					int matt = (int)(mat) + 10;
-					matt=5;
 					Position pos = new Position(i,j);
-					returnarray[i][j] =  new Plant(Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),matt, Math.random(),pos,name, "Plant", true,x );
+					returnarray[i][j] =  new Plant(Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),matt, Math.random(),pos,name, "Plant", true,x );
 					plantcount -= 1;
 					x++;
 //					returnarray[i][j].activate();

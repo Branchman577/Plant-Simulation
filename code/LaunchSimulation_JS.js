@@ -39,7 +39,7 @@ function generate_board(data){
 	const half_root_geo_ver = new THREE.BoxGeometry(0.2,0.5,0.000000000000001);
 	const half_root_geo_hor = new THREE.BoxGeometry(0.5,0.2,0.000000000000001);
 	const circle_geo = new THREE.CircleGeometry(0.5,64);
-	const rock_geo = new THREE.BoxGeometry(1,1,2);
+	const rock_geo= new THREE.PlaneGeometry(1,1,1);
 	console.log("generated BoxGeometry");
 	function displayCube(geometry, color, x,y,z){
 		const mat = new THREE.MeshPhongMaterial({color})
@@ -65,6 +65,14 @@ function generate_board(data){
 		root.position.x=x;
 		root.position.y=y;
 		root.position.z=1;
+	}
+	function displaySquare(square_geo,color,x,y,z){
+		const square = new THREE.Mesh(square_geo,new THREE.MeshPhongMaterial({color})); 
+		scene.add(square);
+		square.position.x=x
+		square.position.y=y
+		square.position.z=z
+
 	}
 	displayCube(background_soil,0x301a05,(max_x/2),(max_y+2)/2,0,-1);
 	displayCube(background_sky,0x445555,max_x/2,max_y+1,0);
@@ -121,10 +129,10 @@ function generate_board(data){
 					displayRoot(half_root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos-0.3,y_pos);
 				}
 
-				else if(checkIfRoot(data, x_pos,y_counter+1,object)||(checkIfRoot(data, x_pos,y_counter-1,object))){//y+1 and y-1			
+				else if(checkIfRoot(data, x_pos,y_counter+1,object)||(checkIfRoot(data, x_pos,y_counter-1,object))){//checks below, above
 					displayRoot(root_geo_ver,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos);
 				}
-				else if((checkIfRoot(data, x_pos+1,y_counter,object))||(checkIfRoot(data, x_pos-1,y_counter,object))){//x+1 and x-1
+				else if((checkIfRoot(data, x_pos+1,y_counter,object))||(checkIfRoot(data, x_pos-1,y_counter,object))){//checks right,left
 					displayRoot(root_geo_hor,parseInt(window.listOfColours[parseInt(object[1]-1)]),x_pos,y_pos);
 				}
 			}
@@ -138,8 +146,8 @@ function generate_board(data){
 				displayCircle(circle_geo,0xffcf00,x_pos,y_pos);
 			}
 			else if (object[0]=='S'){
-				displayCircle(circle_geo,0x5f5750,x_pos,y_pos);
-//				displayCube(rock_geo,0x5f5750,x_pos,y_pos,0);
+//				displayCircle(circle_geo,0x5f5750,x_pos,y_pos);
+				displaySquare(rock_geo,0x5f5750,x_pos,y_pos,1);
 			}
 
 			x_pos=x_pos+1;
@@ -194,7 +202,8 @@ function main(){
 				}
 			})
 			.then(function(){
-				var slider_config='<input type="range" min="1" max="'+Math.floor(window.state_list/2).length+'" value="1" class="slider" id="myRange">';
+
+				var slider_config='<input type="range" min="1" max="1500" value="1" class="slider" id="myRange">';
 				document.getElementById('slideContainer').innerHTML = slider_config
 				window.slider = document.getElementById('myRange');
 				window.output = document.getElementById('displayValue');
