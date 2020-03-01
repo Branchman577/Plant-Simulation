@@ -230,6 +230,7 @@ public class Plant extends SimProcess {
 	}
 
 	public void lifeCycle() throws SuspendExecution{
+		ArrayList<Plant> newPlants= new ArrayList<Plant>();
 		sendTraceNote("Plant is planted "+this.origin.Gety()+" "+this.origin.Getx());
 		Board board = simulation.board;
 		connectedresources = new ArrayList<Resource>();
@@ -288,11 +289,16 @@ public class Plant extends SimProcess {
 				hold(new TimeSpan(1, TimeUnit.MINUTES));
 		}
 		sendTraceNote("Plant has died");
-		System.out.println(plant_no+" "+fitness()+" "+agress+" "+(((fitness()+agress)/2))+" "+newSeedlingPlace(this.origin));
+
 		for (Position posdel : this.positions) {
 			this.simulation.board.boardboi[posdel.Gety()][posdel.Getx()] = null;
 			
 			// need to add maturity and growth up, add death and removing of postions on board, add repoducing and next generation
+		}
+		System.out.println(plant_no+" "+fitness()+" "+agress+" "+(((fitness()+agress)/2))+" "+newSeedlingPlace(this.origin));
+		
+		for(Plant seedling: newPlants){
+			seedling.activate();
 		}
 	}
 	public void consumeresources(){
@@ -363,6 +369,13 @@ public class Plant extends SimProcess {
 		}
 	
 	public ArrayList<Plant> generateSeedlings(Plant plant2){
+		double newAgress;
+		double newGrowthRate;
+		double newWCons;
+		double newICons;
+		double newNCons;
+		int newMat;
+		double newMut;
 		ArrayList<Plant> seedlings = new ArrayList<Plant>();
 		double numberOfSeeds= Math.floor(2*fitness());
 		double carryOverFactP1= ((fitness()+agress)/2);
@@ -374,26 +387,32 @@ public class Plant extends SimProcess {
 		else{p2Portion+=toBeFilled;}
 		int i=0;
 		while(i<numberOfSeeds){//Stuff to modify Agressiveness, Growth_Rate, water consump, iron consump, nit consump, maturity, 
-			if(Math.random()<0.05){double newAgress= Math.random();}
-			else{double newAgress= newGeneValue(agress, agress, plant2.agress,plant2.agress);}
-			if(Math.random()<0.05){double newGrowthRate = Math.random();}
-			else{double newGrowthRate = newGeneValue(growth, agress,plant2.growth,plant2.agress);}
-			if(Math.random()<0.05){double newWCons=Math.random();}	
-			else{double newWCons= newGeneValue(resourceconw, agress, plant2.resourceconw,plant2.resourceconw);}
-			if(Math.random()<0.05){double newICons= Math.random();}
-			else{double newICons=newGeneValue(resourceconi, agress,plant2.resourceconw,plant2.agress);}
-			if(Math.random()<0.05){double newNCons = Math.random();}
-			else{double newNCons= newGeneValue(resourceconn, agress,plant2.resourceconn,plant2.agress);}
-			if(Math.random()<0.05){int newMat = (int)(Math.random()*20+1)+10;}
-			else{int newMat = (int)(Math.floor(newGeneValue(maturity, agress,plant2.maturity,plant2.agress)));}
+			if(Math.random()<mutation){ newAgress= Math.random();}
+			else{ newAgress= newGeneValue(agress, agress, plant2.agress,plant2.agress);}
+			if(Math.random()<mutation){ newGrowthRate = Math.random();}
+			else{ newGrowthRate = newGeneValue(growth, agress,plant2.growth,plant2.agress);}
+			if(Math.random()<mutation){newWCons=Math.random();}	
+			else{newWCons= newGeneValue(resourceconw, agress, plant2.resourceconw,plant2.resourceconw);}
+			if(Math.random()<mutation){newICons= Math.random();}
+			else{newICons=newGeneValue(resourceconi, agress,plant2.resourceconw,plant2.agress);}
+			if(Math.random()<mutation){newNCons = Math.random();}
+			else{newNCons= newGeneValue(resourceconn, agress,plant2.resourceconn,plant2.agress);}
+			if(Math.random()<mutation){newMat = (int)(Math.random()*20+1)+10;}
+			else{newMat = (int)(Math.floor(newGeneValue(maturity, agress,plant2.maturity,plant2.agress)));}
+			if(Math.random()<mutation){newMut = Math.random();}
+			else{ newMut= newGeneValue(mutation,agress,plant2.mutation,plant2.agress);}
 			Position newOrigin= newSeedlingPlace(this.origin);
-//			simulation.board[y][x]
-			
+			Plant seedling = new Plant(newAgress, newGrowthRate,newWCons,newICons,newNCons,newMat,newMut, newOrigin, simulation,"Plant", true,simulation.board.plantID);
+			simulation.board.boardboi[newOrigin.Gety()][newOrigin.Getx()]= seedling;
+			seedlings.add(seedling);
+			//	public Plant(double agressiveness,double growth_rate,double resource_conswater,double resource_consiron,double resource_consnitro, int maturity, double mutation,Position pos, Model owner, String name, boolean showInTrace, int num){
+			simulation.board.plantID++;
 			i++;
 		}
 		
 		return seedlings;
 	}
+	
 	public double fitness(){
 		return (this.connectedresources.size()*10)/(this.positions.size()*(this.resourceconw+this.resourceconi+resourceconn));
 	}
@@ -406,11 +425,19 @@ public class Plant extends SimProcess {
 	public Position newSeedlingPlace(Position origin){
 		int newXPos=-1;
 		int newYPos=-1;
-		while((newXPos>=0&&newXPos<simulation.board.sizex-1)&&(newXPos>1&&newYPos<4)&&simulation.board.boardboi[newYPos][newXPos]==null){
+		while((newXPos<0||newXPos>simulation.board.sizex-1)||(newYPos<2||newYPos>4)||simulation.board.boardboi[newYPos][newXPos]!=null){
 			newXPos = (int)((Math.random()*5+1)+Math.ceil(origin.Getx()/2));
-			newYPos = (int)((Math.random()*2+1));
+			newYPos = (int)((Math.random()*2+1)+1);
 		}
-		System.out.println(newXPos+" "+newYPos);
-		return new Position(0,0);
+		return new Position(newXPos,newYPos);
+	}
+	public Position findMate(skyPoint){
+		int increment=1;
+		while((skyPoint.Getx()-increment>=0)||(skyPoint.Getx()+increment<simulation.board.sizex)){
+			if(skyPoint.Getx()+increment<simulation.board.sizex&&(simulation.board.boardboi[0][skyPoint.Getx()+increment]!=null)){return new Position(skyPoint.Getx()+increment,0);}
+			else if(skyPoint.Getx()-increment>=0&&simulation.board.boardboi[0][skyPoint.Getx()-increment]!=null){return new Position(skyPoint.Getx()-increment,0);}
+			increment++;
+		}	
+		
 	}
 }
