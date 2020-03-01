@@ -304,47 +304,28 @@ public class Plant extends SimProcess {
 			if((age>=maturity&&searchflag==true)&& finrepo == false){
 				//int maxY=this.simulation.board.sizey;
 				Position minY = this.positions.get(0);
-				if(repoflag==false){
-					for(Position growthPlace:this.positions){
-						//System.out.println(growthPlace.Gety() + " " +minY.Gety());
-						if(growthPlace.Gety()< minY.Gety()){
-							minY=growthPlace;
-						}
+
+		
+				for(Position growthPlace:this.positions){
+					//System.out.println(growthPlace.Gety() + " " +minY.Gety());
+					if(growthPlace.Gety()< minY.Gety()){
+						minY=growthPlace;
 					}
-
-					repoflag=true;
-
-					Position growthChoice = growthdirection(minY, skyPoint);
-
-					if(growthChoice!= minY){
-						Grow(growthChoice);
-						if(growthChoice.Gety() == skyPoint.Gety() && growthChoice.Getx()== skyPoint.Getx()){
-							sendTraceNote("Ready to repoduce");
-							finrepo = true;
-						}
-					}
-					else{
-						repoflag = false;
-
-					}
-
 				}
-				else{
-					Position growthChoice = growthdirection(minY, skyPoint);
-					if(growthChoice!=minY){
-						Grow(growthChoice);
-						if(growthChoice.Gety() == skyPoint.Gety() && growthChoice.Getx()== skyPoint.Getx()){
-							sendTraceNote("Ready to repoduce");
-							finrepo = true;
-					}
-					}
-					else{
-						repoflag = false;
+				repoflag = true;
 
+				Position growthChoice = growthdirection(minY, skyPoint);
+
+				if(growthChoice!= minY){
+					Grow(growthChoice);
+					if(growthChoice.Gety() == skyPoint.Gety() && growthChoice.Getx()== skyPoint.Getx()){
+						sendTraceNote("Ready to repoduce");
+						finrepo = true;
+						repoflag = false;
 					}
 				}
 
-			}
+				}
 
 			else if(searchflag == true){
 

@@ -99,7 +99,6 @@ public class Board extends SimProcess{
 				}
 			}
 		}
-
 		return returnarray;
 	}
 	public double probplacer(double rows, double columns,double numtoplace, double base, int scanx,int scany){
