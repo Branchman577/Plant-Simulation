@@ -80,14 +80,24 @@ public class Plant extends SimProcess {
 		alreadychecked.add(edgepoint);
 
 		ArrayList<Position> needtocheck = new ArrayList<Position>();
-		needtocheck.add(new Position(y-1,x));
-		needtocheck.add(new Position(y+1,x));
-		needtocheck.add(new Position(y,x-1));
-		needtocheck.add(new Position(y,x+1));
-		//add the first 4 immediate positions around the edgepoint
-		
-		//int maxchecks = this.simulation.board.Getx()*this.simulation.board.Gety();
-		//int numchecks = 0;
+		Position first = new Position(y-1,x);
+	 	Position second = new Position(y+1,x);
+	 	Position third = new Position(y,x-1);
+	 	Position fourth = new Position(y,x+1);
+
+	 	if(this.simulation.board.validpos(first))
+			needtocheck.add(first);
+
+		if(this.simulation.board.validpos(second))
+			needtocheck.add(second);
+
+		if(this.simulation.board.validpos(third))
+			needtocheck.add(third);
+
+		if(this.simulation.board.validpos(fourth))
+			needtocheck.add(fourth);
+		//add the first 4 immediate positions around the edgepoint if they are valid
+
 		while(needtocheck.size()>0 ){//&& numchecks < maxchecks
 			Position checkpos = needtocheck.get(0);
 			needtocheck.remove(0);
@@ -111,102 +121,127 @@ public class Plant extends SimProcess {
 		 			}
 		 		}
 		 	}
+
 		 	alreadychecked.add(checkpos);
 	 		Position pos1 = new Position(checky-1,checkx);
 	 		Position pos2 = new Position(checky+1,checkx);
 	 		Position pos3 = new Position(checky,checkx-1);
 	 		Position pos4 = new Position(checky,checkx+1);
-
 	 		boolean foundflag = false;
-	 		for ( Position posboi : needtocheck ) {
-	 			if(posboi.Gety() == pos1.Gety() && posboi.Getx() == pos1.Getx()){
-	 				foundflag = true;
-	 				break;
-	 			}
- 			for (Position posboi2 : alreadychecked ) {
- 				if (foundflag == true) {
- 					break;	
- 				}
- 					if(posboi.Gety() == pos1.Gety() && posboi.Getx() == pos1.Getx()){
- 						foundflag = true;
- 						break;
- 					}
- 						
- 				}
-	 		}
-	 		if (foundflag == false) {
-	 			needtocheck.add(pos1);
-	 		}
-	 		foundflag = false;
 
-	 		for ( Position posboi : needtocheck ) {
-	 			if(posboi.Gety() == pos2.Gety() && posboi.Getx() == pos2.Getx()){
-	 				foundflag = true;
-	 				break;
-	 			}
- 			for (Position posboi2 : alreadychecked ) {
- 				if (foundflag == true) {
- 					break;	
- 				}
- 					if(posboi.Gety() == pos2.Gety() && posboi.Getx() == pos2.Getx()){
- 						foundflag = true;
- 						break;
- 					}
- 						
- 				}
-	 		}
-	 		if (foundflag == false) {
-	 			needtocheck.add(pos2);
-	 		}
-	 		foundflag = false;
+	 		if (this.simulation.board.validpos(pos1)) {
 
-	 		for ( Position posboi : needtocheck ) {
-	 			if(posboi.Gety() == pos3.Gety() && posboi.Getx() == pos3.Getx()){
-	 				foundflag = true;
-	 				break;
-	 			}
- 			for (Position posboi2 : alreadychecked ) {
- 				if (foundflag == true) {
- 					break;	
- 				}
- 					if(posboi.Gety() == pos3.Gety() && posboi.Getx() == pos3.Getx()){
- 						foundflag = true;
- 						break;
- 					}
- 						
- 				}
-	 		}
-	 		if (foundflag == false) {
-	 			needtocheck.add(pos3);
-	 		}
-	 		foundflag = false;
+		 		for ( Position posboi : needtocheck ) {
+		 			if(posboi.Gety() == pos1.Gety() && posboi.Getx() == pos1.Getx()){
+		 				foundflag = true;
+		 				break;
+		 			}
+	 			for (Position posboi2 : alreadychecked ) {
 
-	 		for ( Position posboi : needtocheck ) {
-	 			if(posboi.Gety() == pos4.Gety() && posboi.Getx() == pos4.Getx()){
-	 				foundflag = true;
-	 				break;
-	 			}
- 			for (Position posboi2 : alreadychecked ) {
- 				if (foundflag == true) {
- 					break;	
- 				}
- 					if(posboi.Gety() == pos4.Gety() && posboi.Getx() == pos4.Getx()){
+ 					if(posboi2.Gety() == pos1.Gety() && posboi2.Getx() == pos1.Getx()){
  						foundflag = true;
  						break;
  					}
- 						
- 				}
-	 		}
-	 		if (foundflag == false) {
-	 			needtocheck.add(pos4);
-	 		}
-	 		foundflag = false;
-	 		//if (!needtocheck.contains(pos1)!alreadychecked.contains(pos1) && 	
-	 		//if (!needtocheck.contains(pos2))needtocheck.add(pos2);
-	 		//if (!needtocheck.contains(pos3))needtocheck.add(pos3);
-	 		//if (!needtocheck.contains(pos4))needtocheck.add(pos4);
-		 	//numchecks += 1;
+	 						
+	 				}
+		 		}
+		 		if (foundflag == false) {
+		 			needtocheck.add(pos1);
+		 		}
 		 	}
+		 	foundflag = false;
+		 	if (this.simulation.board.validpos(pos2)) {
+
+		 		for ( Position posboi : needtocheck ) {
+		 			if(posboi.Gety() == pos2.Gety() && posboi.Getx() == pos2.Getx()){
+		 				foundflag = true;
+		 				break;
+		 			}
+	 			for (Position posboi2 : alreadychecked ) {
+
+ 					if(posboi2.Gety() == pos2.Gety() && posboi2.Getx() == pos2.Getx()){
+ 						foundflag = true;
+ 						break;
+ 					}
+	 						
+	 				}
+		 		}
+		 		if (foundflag == false) {
+		 			needtocheck.add(pos2);
+		 		}
+	 		}
+
+	 		foundflag = false;
+	 		if (this.simulation.board.validpos(pos3)) {
+
+		 		for ( Position posboi : needtocheck ) {
+		 			if(posboi.Gety() == pos3.Gety() && posboi.Getx() == pos3.Getx()){
+		 				foundflag = true;
+		 				break;
+		 			}
+	 			for (Position posboi2 : alreadychecked ) {
+	 				
+ 					if(posboi2.Gety() == pos3.Gety() && posboi2.Getx() == pos3.Getx()){
+ 						foundflag = true;
+ 						break;
+ 					}
+	 						
+	 				}
+		 		}
+		 		if (foundflag == false) {
+		 			needtocheck.add(pos3);
+		 		}
+		 	}
+
+		 	foundflag = false;
+
+		 	if (this.simulation.board.validpos(pos4)) {
+
+		 		for ( Position posboi : needtocheck ) {
+		 			if(posboi.Gety() == pos4.Gety() && posboi.Getx() == pos4.Getx()){
+		 				foundflag = true;
+		 				break;
+		 			}
+	 			for (Position posboi2 : alreadychecked ) {
+	 		
+ 					if(posboi2.Gety() == pos4.Gety() && posboi2.Getx() == pos4.Getx()){
+ 						foundflag = true;
+ 						break;
+ 					}
+	 						
+	 				}
+		 		}
+		 		if (foundflag == false) {
+		 			needtocheck.add(pos4);
+		 		}
+		 	}
+
+		 	if(needtocheck.size() == 1){
+		 		checkpos = needtocheck.get(0);
+				needtocheck.remove(0);
+
+				checkx = checkpos.Getx();
+				checky = checkpos.Gety();
+
+				if(this.simulation.board.validpos(checkpos)){
+			 		boolean notin = false;
+			 		if((bb[checky][checkx] instanceof Resource)){
+			 			for (Resource conn : connectedresources ) {
+			 				if(checkx == conn.x && checky ==conn.y)
+			 					notin = true;	
+			 			}
+			 			if (notin == false){
+				 			if (Resourcechecker(type, (Resource)bb[checky][checkx])){
+				 				this.growthpoint = edgepoint;
+				 				sendTraceNote("The new growthpoint is "+ this.growthpoint);
+								return checkpos; // Returning found resource
+							}						
+			 			}
+			 		}
+		 		}
+
+		 	}
+		}
 		return edgepoint; // returns chosen edgepoint if it fails
 	}
 
