@@ -1,7 +1,7 @@
 import desmoj.core.simulator.*;
 import desmoj.core.dist.*;
 import java.util.concurrent.TimeUnit;
-
+import java.util.Scanner;
 
 public class LaunchSimulation extends Model{
 	public Board board;
@@ -41,7 +41,12 @@ public class LaunchSimulation extends Model{
 	}
 	//Initialise all static objects
 	public void init(){
-		
+		Scanner in = new Scanner(System.in);
+		System.out.println("Enter the amount of plants the simulation starts off with");
+		noplant= (in.nextInt());
+		System.out.println("Enter the size of the board the simulation will run with");
+		size_x= in.nextInt();
+		size_y= in.nextInt();
 		board = new Board(size_x, size_y, noplant, this, "Board", true);
 		
 	}

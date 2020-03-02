@@ -11,6 +11,8 @@ public class Board extends SimProcess{
 	public Integer noPlants;
 	public SimProcess[][] boardboi;
 	public Integer resources;
+	public Integer plantID;
+	public ArrayList<Plant> newSeedlings = new ArrayList<Plant>();
 
 	public Board( Integer sizey, Integer sizex, Integer noPlants, LaunchSimulation name, String desc, boolean showInTrace){
 		super(name,desc,showInTrace);
@@ -18,6 +20,7 @@ public class Board extends SimProcess{
 		this.sizey = sizey;
 		this.noPlants = noPlants;
 		this.resources = ((this.sizex * this.sizey)/16);
+		this.plantID=1;		
 		this.boardboi = makeboard(name);
 	}
 
@@ -31,7 +34,7 @@ public class Board extends SimProcess{
 		SimProcess[][] returnarray = new SimProcess[this.sizey +2 ][this.sizex]; // plus 2 for sky
 
 		//placing plants
-		int x=1;
+		
 		for (int i =2; i < returnarray.length; i++ ) {
 			for (int j =0; j < returnarray[i].length; j++ ) {
 				plantprob = probplacer(2.0,(double)this.sizex,plantcount,0.3,j,i);
@@ -41,9 +44,9 @@ public class Board extends SimProcess{
 					double mat = Math.random() * 20 + 1;
 					int matt = (int)(mat) + 10;
 					Position pos = new Position(i,j);
-					returnarray[i][j] =  new Plant(Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),matt, Math.random(),pos,name, "Plant", true,x );
+					returnarray[i][j] =  new Plant(Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),matt, Math.random(),pos,name, "Plant", true,plantID);
 					plantcount -= 1;
-					x++;
+					plantID++;
 //					returnarray[i][j].activate();
 					//System.out.println(returnarray[i][j]);
 				}
@@ -124,11 +127,22 @@ public class Board extends SimProcess{
 	public boolean validposgrowup(Position checkpos){
 		return ( ( (checkpos.Getx() >=0) && (checkpos.Getx() < this.sizex) ) && ( (checkpos.Gety()>=0) && (checkpos.Gety() < this.sizey) ) );
 	}
+	public void addToList(Plant plant){
+		newSeedlings.add(plant);
+	}
+
 	public void lifeCycle() throws SuspendExecution{
 
 		while(true){
 			sendTraceNote(generateBoardState());
 			hold(new TimeSpan(1, TimeUnit.MINUTES));
+			for(Plant seedling: newSeedlings){
+				if(boardboi[seedling.origin.Gety()][seedling.origin.Getx()]==seedling){
+					seedling.activate();
+				}
+			}
+			newSeedlings = new ArrayList<Plant>();
+
 		}
 	}
 	public String generateBoardState(){
