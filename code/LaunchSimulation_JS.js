@@ -164,7 +164,8 @@ function colourGenerator(){
 	return "0x"+red+green+blue;
 }
 function checkIfRoot(data, x,y,object){
- 	if(data[y].split("||")[x]=="P"+object[1]){return true;}
+	if(y<0){return false;}
+ 	else if(data[y].split("||")[x]=="P"+object[1]){return true;}
  	else if(data[y].split("||")[x]=="R"+object[1]){return true;}
  	else if(data[y].split("||")[x]=="Water"){return true;}
  	else if(data[y].split("||")[x]=="Nitro"){return true;}
@@ -202,7 +203,8 @@ function main(){
 				}
 			})
 			.then(function(){
-				var slider_config='<input type="range" min="1" max="'+Math.floor(window.state_list/2).length+'" value="1" class="slider" id="myRange">';
+
+				var slider_config='<input type="range" min="1" max="1500" value="1" class="slider" id="myRange">';
 				document.getElementById('slideContainer').innerHTML = slider_config
 				window.slider = document.getElementById('myRange');
 				window.output = document.getElementById('displayValue');
