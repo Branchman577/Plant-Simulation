@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 public class Plant extends SimProcess {
 
+
 	public double agress;
 	public double growth;
 	public double resourceconw;
@@ -23,6 +24,10 @@ public class Plant extends SimProcess {
 	private int typeflag = 1;
 	private boolean growthflag = false;
 	private boolean searchflag = true;
+	private boolean repoflag = false;
+	private boolean finrepo =false;
+	private boolean matedFlag=false;
+	private boolean readyToMateFlag=false;
 	private Position growto;
 	private Position growthpoint;
 	private ArrayList<Resource> connectedresources;
@@ -43,9 +48,9 @@ public class Plant extends SimProcess {
 		this.size = 1;
 		this.maturity = maturity;
 		this.mutation = mutation;
-		this.water = 100.0;
-		this.iron = 100.0;
-		this.nitro = 100.0;
+		this.water = 200.0;
+		this.iron = 200.0;
+		this.nitro = 200.0;
 		this.positions = new ArrayList<Position>();
 		this.positions.add(pos);
 		this.origin=pos;
@@ -58,10 +63,20 @@ public class Plant extends SimProcess {
 
 		int numedges = positions.size();
 		int edgechoice = (int)(Math.random() * ((numedges))) + 0;
+
 		Position edgepoint = this.positions.get(edgechoice);
 
 		int x = edgepoint.Getx();
 		int y = edgepoint.Gety();
+		while(y <2){
+			edgechoice = (int)(Math.random() * ((numedges))) + 0;
+			edgepoint = this.positions.get(edgechoice);
+
+			x = edgepoint.Getx();
+			y = edgepoint.Gety();
+
+		}
+
 		ArrayList<Position> alreadychecked = new ArrayList<Position>();
 		alreadychecked.add(edgepoint);
 
@@ -82,10 +97,13 @@ public class Plant extends SimProcess {
 			int checky = checkpos.Gety();
 
 		 	if(this.simulation.board.validpos(checkpos)){
-
+		 		boolean notin = false;
 		 		if((bb[checky][checkx] instanceof Resource)){
-		 			if (!(connectedresources.contains(bb[checky][checkx])) ){
-	
+		 			for (Resource conn : connectedresources ) {
+		 				if(checkx == conn.x && checky ==conn.y)
+		 					notin = true;	
+		 			}
+		 			if (notin == false){
 			 			if (Resourcechecker(type, (Resource)bb[checky][checkx])){
 			 				this.growthpoint = edgepoint;
 			 				sendTraceNote("The new growthpoint is "+ this.growthpoint);
@@ -93,7 +111,8 @@ public class Plant extends SimProcess {
 						}						
 		 			}
 		 		}
-		 		alreadychecked.add(checkpos);
+		 	}
+		 	alreadychecked.add(checkpos);
 	 		Position pos1 = new Position(checky-1,checkx);
 	 		Position pos2 = new Position(checky+1,checkx);
 	 		Position pos3 = new Position(checky,checkx-1);
@@ -189,9 +208,6 @@ public class Plant extends SimProcess {
 	 		//if (!needtocheck.contains(pos4))needtocheck.add(pos4);
 		 	//numchecks += 1;
 		 	}
-	 		
-
-		 }
 		return edgepoint; // returns chosen edgepoint if it fails
 	}
 
@@ -212,9 +228,43 @@ public class Plant extends SimProcess {
 		int x = posg.Getx();
 		int y = posg.Gety();
 		//if ((!(bb[y][x] instanceof Resource) && !(bb[y][x] instanceof Plant)) && (!(bb[y][x] instanceof Root)))  {
+
 			this.positions.add(posg);
 			bb[y][x] = new Root(this,posg,this.owner, "Root", false);
 			this.growthpoint = posg;
+
+			Position pos1 = new Position(y-1,x);
+	 		Position pos2 = new Position(y+1,x);
+	 		Position pos3 = new Position(y,x-1);
+	 		Position pos4 = new Position(y,x+1);
+
+	 		if (this.simulation.board.validpos(pos1)) {
+	 			if (bb[pos1.Gety()][pos1.Getx()] instanceof Resource ) {
+	 				if(((Resource)bb[pos1.Gety()][pos1.Getx()]).gettype()!= 5)
+	 					connectedresources.add((Resource)bb[pos1.Gety()][pos1.Getx()]);
+	 			}
+	 			
+	 		}
+	 		if (this.simulation.board.validpos(pos2)){
+	 			if (bb[pos2.Gety()][pos2.Getx()] instanceof Resource && this.simulation.board.validpos(pos2) ) {
+		 			if(((Resource)bb[pos2.Gety()][pos2.Getx()]).gettype()!= 5)
+		 				connectedresources.add((Resource)bb[pos2.Gety()][pos2.Getx()]);
+	 			}
+	 		}
+
+	 		if (this.simulation.board.validpos(pos3)){
+	 			if (bb[pos3.Gety()][pos3.Getx()] instanceof Resource && this.simulation.board.validpos(pos3)) {
+	 				if(((Resource)bb[pos3.Gety()][pos3.Getx()]).gettype()!= 5)
+	 					connectedresources.add((Resource)bb[pos3.Gety()][pos3.Getx()]);
+	 			}
+	 		}
+	 		if (this.simulation.board.validpos(pos4)){
+	 			if (bb[pos4.Gety()][pos4.Getx()] instanceof Resource && this.simulation.board.validpos(pos4)) {
+	 				if(((Resource)bb[pos4.Gety()][pos4.Getx()]).gettype()!= 5)
+	 					connectedresources.add((Resource)bb[pos4.Gety()][pos4.Getx()]);
+	 			}
+	 		}
+
 			sendTraceNote("Made root at position" + " " + this.growthpoint);
 			//return true;
 		//}
@@ -230,12 +280,14 @@ public class Plant extends SimProcess {
 	}
 
 	public void lifeCycle() throws SuspendExecution{
-		ArrayList<Plant> newPlants= new ArrayList<Plant>();
+
 		sendTraceNote("Plant is planted "+this.origin.Gety()+" "+this.origin.Getx());
 		Board board = simulation.board;
 		connectedresources = new ArrayList<Resource>();
 		Position resourceboi = Searchfor(lowestresource());
-
+		Position skyPoint = new Position(0,origin.Getx());
+		ArrayList<Plant> newPlants= new ArrayList<Plant>();
+//		Plant mate=new Plant(0,0,0,0,0,0,0,origin,simulation,"fake plant",false,0);
 		if(positions.contains(resourceboi)){
 			sendTraceNote("Resource not found");
 		}
@@ -246,76 +298,133 @@ public class Plant extends SimProcess {
 			this.growto = resourceboi;
 		}
 	
-		while( (this.water> this.resourceconw * this.positions.size()&& this.iron>this.resourceconi * this.positions.size()) && this.nitro>this.resourceconn * this.positions.size()){
+		while( (this.water> this.resourceconw * this.positions.size()&& this.iron>this.resourceconi * this.positions.size()) && this.nitro>this.resourceconn * this.positions.size()&& age<(maturity+15)&&matedFlag==false){
 			this.water =  this.water - (this.resourceconw * this.positions.size());
 			this.iron = this.iron - (this.resourceconi * this.positions.size());
 			this.nitro = this.nitro -(this.resourceconn * this.positions.size());
-				if(searchflag == true){
 
-					resourceboi = Searchfor(lowestresource());
-					if(positions.contains(resourceboi)){
-						sendTraceNote("Resource not found");
-					}
-					else{
-						sendTraceNote("Resource is at "+resourceboi.Gety()+ " "+resourceboi.Getx());
-						growthflag = true;
-						searchflag = false;
-						this.growto = resourceboi;
-					}
+			if((age>=maturity&&searchflag==true)&& finrepo == false){
+				//int maxY=this.simulation.board.sizey;
+				Position minY = this.positions.get(0);
 
+		
+				for(Position growthPlace:this.positions){
+					//System.out.println(growthPlace.Gety() + " " +minY.Gety());
+					if(growthPlace.Gety()< minY.Gety()){
+						minY=growthPlace;
+					}
+				}
+				repoflag = true;
+
+				Position growthChoice = growthdirection(minY, skyPoint);
+
+				if(growthChoice!= minY){
+					Grow(growthChoice);
+					if(growthChoice.Gety() == skyPoint.Gety() && growthChoice.Getx()== skyPoint.Getx()){
+						sendTraceNote("Ready to repoduce");
+						finrepo = true;
+						repoflag = false;
+						readyToMateFlag=true;
+					}
+				}
+
+				}
+
+			else if(searchflag == true){
+
+				resourceboi = Searchfor(lowestresource());
+				if(positions.contains(resourceboi)){
+					sendTraceNote("Resource not found");
 				}
 				else{
-					if(simulation.board.distance(this.growthpoint,growto) >1){
-						Position growthchoice= growthdirection(this.growthpoint,growto);
-						if(growthchoice != growthpoint){
-							Grow(growthchoice);
-						}
-						else{
-							growthflag = false;
-							searchflag =true;							
-						}
+					sendTraceNote("Resource is at "+resourceboi.Gety()+ " "+resourceboi.Getx());
+					growthflag = true;
+					searchflag = false;
+					this.growto = resourceboi;
+				}
+
+			}
+			else{
+				if(simulation.board.distance(this.growthpoint,growto) >1){
+					Position growthchoice= growthdirection(this.growthpoint,growto);
+					if(growthchoice != growthpoint){
+						Grow(growthchoice);
 					}
 					else{
-						connectedresources.add((Resource)this.simulation.board.boardboi[growto.Gety()][growto.Getx()]);
 						growthflag = false;
-						searchflag = true;
+						searchflag =true;							
 					}
-
 				}
-				consumeresources();	
-	
-				System.out.println(presentTime());
-				sendTraceNote("Trace Note");
-				hold(new TimeSpan(1, TimeUnit.MINUTES));
+
+
+
+				else{
+					//connectedresources.add((Resource)this.simulation.board.boardboi[growto.Gety()][growto.Getx()]);
+					growthflag = false;
+					searchflag = true;
+				}
+
+			}
+			if(readyToMateFlag== true){
+				Position potMate= findMate(skyPoint);
+				System.out.println(plant_no+" ready to reproduce "+ potMate);
+				if (potMate.Getx()!=-1&&potMate.Gety()!=-1){
+					System.out.println((simulation.board.boardboi[potMate.Gety()][potMate.Getx()]));
+					Root mater = (Root)(simulation.board.boardboi[potMate.Gety()][potMate.Getx()]);
+					System.out.println(mater);
+					Plant mate = mater.originplant;
+					hold(new TimeSpan(1, TimeUnit.MINUTES));
+					System.out.println(plant_no+" selected mate");
+					death();					
+					System.out.println(plant_no+" deleted itself");
+					newPlants=generateSeedlings(mate);	
+					System.out.println(plant_no+" planted babies");	
+					matedFlag=true;	
+					sendTraceNote("Mated with "+mate);
+					break;
+					
+				}
+		
+			}
+			consumeresources();
+			age++;
+
+			System.out.println(presentTime()+" "+plant_no);
+			sendTraceNote("Trace Note");
+			hold(new TimeSpan(1, TimeUnit.MINUTES));
 		}
 		sendTraceNote("Plant has died");
 
-		for (Position posdel : this.positions) {
-			this.simulation.board.boardboi[posdel.Gety()][posdel.Getx()] = null;
-			
-			// need to add maturity and growth up, add death and removing of postions on board, add repoducing and next generation
-		}
 		System.out.println(plant_no+" "+fitness()+" "+agress+" "+(((fitness()+agress)/2))+" "+newSeedlingPlace(this.origin));
-		
-		for(Plant seedling: newPlants){
-			seedling.activate();
+		if(matedFlag!=true){death();}
+		else{
+			for(Plant seedling: newPlants){
+				seedling.activate();
+			}
 		}
 	}
 	public void consumeresources(){
 		if (connectedresources.size() > 1) {
 			for (Resource reboi : connectedresources ) {
-				reboi.consume(10.0);
-				if (reboi.gettype() == 2)
+				boolean kek = reboi.consume(10.0);
+				if (reboi.gettype() == 2 && kek)
 					this.water+=10.0;
-				else if (reboi.gettype() == 3)
+				else if (reboi.gettype() == 3 && kek)
 					this.iron +=10.0;
-				else
+				else if(kek)
 					this.nitro += 10.0;	
 			}
 			
 		}
 
 
+	}
+	public void death(){
+		for (Position posdel : this.positions) {
+			this.simulation.board.boardboi[posdel.Gety()][posdel.Getx()] = null;
+			
+			// need to add maturity and growth up, add repoducing and next generation
+		}
 	}
 	public int lowestresource(){
 
@@ -339,21 +448,40 @@ public class Plant extends SimProcess {
 		possiblegrowth.add(new Position(growthpointy,growthpointx+1));
 		possiblegrowth.add(new Position(growthpointy,growthpointx-1));
 
+
 		while (possiblegrowth.size() != 0){
 			int num = (int)(Math.random() * ((possiblegrowth.size())));//number between 0-3 inclusive
 			Position check = possiblegrowth.get(num);
 
-			if( simulation.board.validpos(check) && (!(simulation.board.boardboi[check.Gety()][check.Getx()] instanceof Resource) && !(simulation.board.boardboi[check.Gety()][check.Getx()] instanceof Plant)) && (!(simulation.board.boardboi[check.Gety()][check.Getx()] instanceof Root))){
-				if (simulation.board.distance(check,growto) < distancetogrow){
-					return check;
+			if (repoflag == true){
+				if( simulation.board.validposgrowup(check) && (!(simulation.board.boardboi[check.Gety()][check.Getx()] instanceof Resource) && !(simulation.board.boardboi[check.Gety()][check.Getx()] instanceof Plant)) && (!(simulation.board.boardboi[check.Gety()][check.Getx()] instanceof Root))){
+					if (simulation.board.distance(check,growto) < distancetogrow){
+						return check;
+					}
+					else{
+						possiblegrowthcheckedlonger.add(check);
+						possiblegrowth.remove(check);
+					}
 				}
 				else{
-					possiblegrowthcheckedlonger.add(check);
 					possiblegrowth.remove(check);
-				}
+					}
+
 			}
 			else{
-				possiblegrowth.remove(check);
+				if( simulation.board.validpos(check) && (!(simulation.board.boardboi[check.Gety()][check.Getx()] instanceof Resource) && !(simulation.board.boardboi[check.Gety()][check.Getx()] instanceof Plant)) && (!(simulation.board.boardboi[check.Gety()][check.Getx()] instanceof Root))){
+					if (simulation.board.distance(check,growto) < distancetogrow){
+						return check;
+					}
+					else{
+						possiblegrowthcheckedlonger.add(check);
+						possiblegrowth.remove(check);
+					}
+				}
+				else{
+					possiblegrowth.remove(check);
+					}
+
 			}
 
 		}
@@ -367,7 +495,6 @@ public class Plant extends SimProcess {
 		}
 			// it found no possible growthpoints
 		}
-	
 	public ArrayList<Plant> generateSeedlings(Plant plant2){
 		double newAgress;
 		double newGrowthRate;
@@ -377,7 +504,7 @@ public class Plant extends SimProcess {
 		int newMat;
 		double newMut;
 		ArrayList<Plant> seedlings = new ArrayList<Plant>();
-		double numberOfSeeds= Math.floor(2*fitness());
+		double numberOfSeeds= Math.floor(0.5*fitness());
 		double carryOverFactP1= ((fitness()+agress)/2);
 		double carryOverFactP2= ((plant2.fitness()+plant2.agress)/2);
 		double p1Portion = 0.6*carryOverFactP1;
@@ -386,6 +513,7 @@ public class Plant extends SimProcess {
 		if(agress>plant2.agress){p1Portion+=toBeFilled;}
 		else{p2Portion+=toBeFilled;}
 		int i=0;
+		System.out.println("Got to before the while loop");
 		while(i<numberOfSeeds){//Stuff to modify Agressiveness, Growth_Rate, water consump, iron consump, nit consump, maturity, 
 			if(Math.random()<mutation){ newAgress= Math.random();}
 			else{ newAgress= newGeneValue(agress, agress, plant2.agress,plant2.agress);}
@@ -401,12 +529,17 @@ public class Plant extends SimProcess {
 			else{newMat = (int)(Math.floor(newGeneValue(maturity, agress,plant2.maturity,plant2.agress)));}
 			if(Math.random()<mutation){newMut = Math.random();}
 			else{ newMut= newGeneValue(mutation,agress,plant2.mutation,plant2.agress);}
+			System.out.println("Got past all the number generation");
 			Position newOrigin= newSeedlingPlace(this.origin);
-			Plant seedling = new Plant(newAgress, newGrowthRate,newWCons,newICons,newNCons,newMat,newMut, newOrigin, simulation,"Plant", true,simulation.board.plantID);
-			simulation.board.boardboi[newOrigin.Gety()][newOrigin.Getx()]= seedling;
-			seedlings.add(seedling);
-			//	public Plant(double agressiveness,double growth_rate,double resource_conswater,double resource_consiron,double resource_consnitro, int maturity, double mutation,Position pos, Model owner, String name, boolean showInTrace, int num){
-			simulation.board.plantID++;
+			if(newOrigin!=null){
+				System.out.println("Got the seedling's new birth place");
+				Plant seedling = new Plant(newAgress, newGrowthRate,newWCons,newICons,newNCons,newMat,newMut, newOrigin, simulation,"Plant", true,simulation.board.plantID);
+				System.out.println("Generated new plant");
+				simulation.board.boardboi[newOrigin.Gety()][newOrigin.Getx()]= seedling;
+				System.out.println("Placed new plant");
+				seedlings.add(seedling);
+				simulation.board.plantID++;
+			}
 			i++;
 		}
 		
@@ -425,19 +558,23 @@ public class Plant extends SimProcess {
 	public Position newSeedlingPlace(Position origin){
 		int newXPos=-1;
 		int newYPos=-1;
-		while((newXPos<0||newXPos>simulation.board.sizex-1)||(newYPos<2||newYPos>4)||simulation.board.boardboi[newYPos][newXPos]!=null){
-			newXPos = (int)((Math.random()*5+1)+Math.ceil(origin.Getx()/2));
+		int counter=0;
+		while((newXPos<0||newXPos>simulation.board.sizex-1)||(newYPos<2||newYPos>4)||simulation.board.boardboi[newYPos][newXPos]!=null&&counter!=50){
+			newXPos = (int)((Math.random()*5+1)+(origin.Getx()-2));
 			newYPos = (int)((Math.random()*2+1)+1);
+			counter++;
+//			System.out.println(newXPos+" "+newYPos+ " "+simulation.board.boardboi[newYPos][newXPos]);
 		}
-		return new Position(newXPos,newYPos);
+		if(counter==50){return null;}
+		return new Position(newYPos,newXPos);
 	}
-	public Position findMate(skyPoint){
+	public Position findMate(Position skyPoint){
 		int increment=1;
 		while((skyPoint.Getx()-increment>=0)||(skyPoint.Getx()+increment<simulation.board.sizex)){
-			if(skyPoint.Getx()+increment<simulation.board.sizex&&(simulation.board.boardboi[0][skyPoint.Getx()+increment]!=null)){return new Position(skyPoint.Getx()+increment,0);}
-			else if(skyPoint.Getx()-increment>=0&&simulation.board.boardboi[0][skyPoint.Getx()-increment]!=null){return new Position(skyPoint.Getx()-increment,0);}
+			if(skyPoint.Getx()+increment<simulation.board.sizex&&(simulation.board.boardboi[0][skyPoint.Getx()+increment]!=null)){return new Position(0,skyPoint.Getx()+increment);}
+			else if(skyPoint.Getx()-increment>=0&&simulation.board.boardboi[0][skyPoint.Getx()-increment]!=null){return new Position(0,skyPoint.Getx()-increment);}
 			increment++;
 		}	
-		
+		return(new Position(-1,-1));
 	}
-}
+	}

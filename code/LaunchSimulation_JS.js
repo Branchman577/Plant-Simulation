@@ -164,7 +164,8 @@ function colourGenerator(){
 	return "0x"+red+green+blue;
 }
 function checkIfRoot(data, x,y,object){
- 	if(data[y].split("||")[x]=="P"+object[1]){return true;}
+	if(y<0){return false;}
+ 	else if(data[y].split("||")[x]=="P"+object[1]){return true;}
  	else if(data[y].split("||")[x]=="R"+object[1]){return true;}
  	else if(data[y].split("||")[x]=="Water"){return true;}
  	else if(data[y].split("||")[x]=="Nitro"){return true;}

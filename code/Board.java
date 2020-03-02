@@ -19,8 +19,9 @@ public class Board extends SimProcess{
 		this.sizey = sizey;
 		this.noPlants = noPlants;
 		this.resources = ((this.sizex * this.sizey)/16);
-		this.boardboi = makeboard(name);
 		this.plantID=1;
+		this.boardboi = makeboard(name);
+			
 	}
 
 	public SimProcess[][] makeboard(LaunchSimulation name){
@@ -101,7 +102,6 @@ public class Board extends SimProcess{
 				}
 			}
 		}
-
 		return returnarray;
 	}
 	public double probplacer(double rows, double columns,double numtoplace, double base, int scanx,int scany){
@@ -123,6 +123,9 @@ public class Board extends SimProcess{
 	}
 	public boolean validpos(Position checkpos){
 		return ( ( (checkpos.Getx() >=0) && (checkpos.Getx() < this.sizex) ) && ( (checkpos.Gety()>=2) && (checkpos.Gety() < this.sizey) ) );
+	}
+	public boolean validposgrowup(Position checkpos){
+		return ( ( (checkpos.Getx() >=0) && (checkpos.Getx() < this.sizex) ) && ( (checkpos.Gety()>=0) && (checkpos.Gety() < this.sizey) ) );
 	}
 	public void lifeCycle() throws SuspendExecution{
 
