@@ -29,59 +29,53 @@ Pressing **Enter** will bring you to a warning page, press the Accept the Risks 
 Proceeding to the new search bar you need to type in: **privacy.file_unique_origin**
 This will bring up the config which should be set to **true** as default.
 
-
-
+![config.png](config.png)
 
 To disable this config you need to click on the button to the right of the config 
+
+![button.png](button.png)
 
 This will disable the config allowing firefox to read the needed files.
 
 3. Building and Running the Simulation
 
-The simulation is built and ran via the terminal and running a shell script called start.sh. To run this script you need to change the directory in the terminal to where the code is stored and to run the script by typing in ./start.sh 
+The simulation is built and ran via the terminal and running a shell script called start.sh. To run this script you need to change the directory in the terminal to where the code is stored and to run the script by typing in **./start.sh**
 
-
-
-
-
-
-
-
+![start.png](start.png)
 
 This will compile and run the program will then prompt you as to change and enter in data about the simulation. It fill first prompt you enter in the number of plants to start in the simulation. Enter in a whole number for example 5
 
-
+![5.png](5.png)
 
 After the plants you will be prompted to enter in the size of the boardstate which is entered in integers following the order of Y-axis size then X-axis size. This can be entered one after another on the same line or entered one at a time for example
 
+![oneline.png](oneline.png)
 
 
-
-
+![twoline.png](twoline.png)
 
 
 After all info has been entered into the simulation the programme will run the simulation and bring up a prompt of how fair along the simulation is for example:
 
-
+![13%.png](13%.png)
 
 The programme will run and may stall at times but will finish and reach 100% as the simulation finishes and is ready to display the simulation
 
 To access the simulation info and to go through the varying boardstates all you need to do is to close the percentage prompt  by clicking on the x button and and a new tab will be opened in Firefox with the Simulation information.
 
-
-
+![100%.png](100%.png)
 
 Upon closing the results progress prompt the Plant simulation tab will be opened, up the top left of the tab will contain the legend and the board progress slider. Below it is the actual board state which can be affected by the slider to show the simulation running and showing the boardstate at each tic.
 
+![legend.png](legend.png)
 
+![board.png](board.png)
 
+Navigation through the simulations boardstates can be achieved by clicking on the green slider button, **holding** and **dragging** the slider to the selected boardstate. Navigation can also be achieved by **clicking** on the green slider and using the **Left** and **Right** keys on the keyboard to cycle through boardstates.
 
+The simulation will continue even after the last plant has died up to boardstate **1499**, should you wish to rewatch the simulation the boardstate can be brought back to boardstate **0**.
 
-Navigation through the simulations boardstates can be achieved by clicking on the green slider button, holding and dragging the slider to the selected boardstate.  Navigation can also be achieved by clicking on the green slider and using the Left and Right keys on the keyboard to cycle through boardstates.
-
-The simulation will continue even after the last plant has died up to boardstate 1499, should you wish to rewatch the simulation the boardstate can be brought back to boardstate 0.
-
-Should a new simulation desired a new simulation can be run by entering ./start.sh into the terminal and entering the new simulation information.
+Should a new simulation desired a new simulation can be run by entering **./start.sh** into the terminal and entering the new simulation information.
 
 
 
