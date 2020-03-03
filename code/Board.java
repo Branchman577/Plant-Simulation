@@ -74,19 +74,6 @@ public class Board extends SimProcess{
 			returnarray[posRock.Gety()][posRock.Getx()]=new Resource(5,1000.0,name,"Rock",true,posRock.Gety(),posRock.Getx());
 			numrocks--;
 		}
-		// placing rocks
-//		for (int l =4; l < returnarray.length; l++ ) {
-//			for (int k =0; k < returnarray[l].length; k++ ) {
-//				resourceprob = probplacer((double)this.sizey,(double)this.sizex,numrocks,0.3,k,l);
-
-//				if (returnarray[l][k]== null) {
-//					if ((resourceprob >=1 || Math.random()< resourceprob) && numrocks != 0) {
-//						returnarray[l][k] = new Resource(5,1000.0,name,"Resource",true,l,k);
-//						numrocks -=1;
-//					}
-//				}
-//			}
-//		}
 		return returnarray;
 	}
 	

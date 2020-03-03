@@ -528,6 +528,7 @@ public class Plant extends SimProcess {
 		double newMut;
 		ArrayList<Plant> seedlings = new ArrayList<Plant>();
 		double numberOfSeeds= Math.floor(0.5*fitness());
+		if(numberOfSeeds<1){numberOfSeeds=1;}
 		double carryOverFactP1= ((fitness()+agress)/2);
 		double carryOverFactP2= ((plant2.fitness()+plant2.agress)/2);
 		double p1Portion = 0.6*carryOverFactP1;
