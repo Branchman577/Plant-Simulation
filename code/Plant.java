@@ -392,9 +392,8 @@ public class Plant extends SimProcess {
 			if(readyToMateFlag== true){
 				Position potMate= findMate(skyPoint);
 				if (potMate.Getx()!=-1&&potMate.Gety()!=-1){
-					System.out.println((simulation.board.boardboi[potMate.Gety()][potMate.Getx()]));
 					Root mater = (Root)(simulation.board.boardboi[potMate.Gety()][potMate.Getx()]);
-					System.out.println(mater);
+
 					Plant mate = mater.originplant;
 					hold(new TimeSpan(1, TimeUnit.MINUTES));
 					death();					
@@ -448,6 +447,7 @@ public class Plant extends SimProcess {
 		if(i!=50){
 			int resType = (int)(Math.random()*3+1)+1;
 			simulation.board.boardboi[resPos.Gety()][resPos.Getx()] = new Resource(resType, water, simulation.board.names,"Resource",true,resPos.Gety(),resPos.Getx());
+			simulation.board.boardboi[resPos.Gety()][resPos.Getx()].activate();
 		}
 	}
 

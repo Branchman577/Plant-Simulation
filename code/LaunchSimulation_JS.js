@@ -199,9 +199,9 @@ function main(){
 				window.output = document.getElementById('displayValue');
 				window.output.innerHTML=0;
 				generate_board(window.state_list[0]);
-				console.log(window.state_list.length);
+
 				window.slider.oninput = function(){
-					console.log(window.state_list[this.value-1]);
+
 					window.output.innerHTML= (this.value-1);
 					generate_board(window.state_list[this.value-1]);
 				}

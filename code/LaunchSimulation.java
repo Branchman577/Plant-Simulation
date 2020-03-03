@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 public class LaunchSimulation extends Model{
 	public Board board;
-	public int size_x=15;
-	public int size_y=15;
+	public int size_x=4;
+	public int size_y=4;
 	public int noplant=3;
 	public LaunchSimulation(Model owner, String Name, boolean showInReport, boolean showInTrace){
 		super(owner, Name, showInReport, showInTrace);
@@ -44,10 +44,11 @@ public class LaunchSimulation extends Model{
 		Scanner in = new Scanner(System.in);
 		System.out.println("Enter the amount of plants the simulation starts off with");
 		noplant= (in.nextInt());
-		System.out.println("Enter the size of the board the simulation will run with");
-		size_x= in.nextInt();
-		size_y= in.nextInt();
+		while(size_x<5&&size_y<5){		
+			System.out.println("Enter 2 numbers that will be the size of the board for the simulation will run with. Minimum value it can be is 5.");
+			size_x= in.nextInt();
+			size_y= in.nextInt();
+		}	
 		board = new Board(size_x, size_y, noplant, this, "Board", true);
-		
 	}
 }
