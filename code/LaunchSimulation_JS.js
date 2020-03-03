@@ -16,8 +16,8 @@ function generate_board(data){
 	canvas.height=window.innerHeight;
 	const renderer = new THREE.WebGLRenderer({canvas});
 	console.log("generated canvas");
-	var max_y=parseInt(window.y_glob)+1;
-	var max_x=parseInt(window.x_glob)+1;
+	var max_x=parseInt(window.y_glob)+1;
+	var max_y=parseInt(window.x_glob)+1;
 	window.camera = new THREE.PerspectiveCamera(90, window.innerWidth/window.innerHeight, 1, 1000); 
 	console.log("generated camera");
 	camera.position.z=Math.sqrt(Math.pow((Math.max(max_x,max_y+2)/(2*Math.cos(45))),2)-((Math.pow(Math.max(max_x,max_y+2),2)/2)));
