@@ -13,6 +13,7 @@ public class Board extends SimProcess{
 	public Integer resources;
 	public Integer plantID;
 	public ArrayList<Plant> newSeedlings = new ArrayList<Plant>();
+	public LaunchSimulation names;
 
 	public Board( Integer sizey, Integer sizex, Integer noPlants, LaunchSimulation name, String desc, boolean showInTrace){
 		super(name,desc,showInTrace);
@@ -20,7 +21,8 @@ public class Board extends SimProcess{
 		this.sizey = sizey;
 		this.noPlants = noPlants;
 		this.resources = ((this.sizex * this.sizey)/16);
-		this.plantID=1;		
+		this.plantID=1;
+		this.names=name;		
 		this.boardboi = makeboard(name);
 	}
 
@@ -32,12 +34,10 @@ public class Board extends SimProcess{
 		double resourceprob;
 
 		SimProcess[][] returnarray = new SimProcess[this.sizey +2 ][this.sizex]; // plus 2 for sky
-		System.out.println(returnarray[0][0]);
 		//placing plants
 		while(plantcount>=1){
 			Position posPlant = placeObject(1,3,0,sizex,returnarray);
-			System.out.println(posPlant);
-			double mat = Math.random() * 20 + 1;
+			double mat = Math.random() * 30 + 1;
 			int matt = (int)(mat) + 10;
 //			Position pos = new Position(i,j);
 			returnarray[posPlant.Gety()][posPlant.Getx()] =  new Plant(Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),matt, Math.random(),posPlant,name, "Plant", true,plantID);
@@ -91,7 +91,6 @@ public class Board extends SimProcess{
 		return new Position(newY,newX);
 	}
 	public double probplacer(double rows, double columns,double numtoplace, double base, int scanx,int scany){
-		//System.out.println(rows+" "+columns+" "+numtoplace+" "+base+" "+scanx+" "+scany);
 		double num_of_tiles = (columns - scanx) + (columns *((rows-1.0)-(scany-2)));
 		return (1)-(((num_of_tiles-numtoplace)/(rows*columns)));
 

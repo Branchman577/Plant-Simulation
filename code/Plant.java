@@ -262,7 +262,6 @@ public class Plant extends SimProcess {
 		SimProcess[][] bb = this.simulation.board.boardboi;
 		int x = posg.Getx();
 		int y = posg.Gety();
-		//if ((!(bb[y][x] instanceof Resource) && !(bb[y][x] instanceof Plant)) && (!(bb[y][x] instanceof Root)))  {
 
 			this.positions.add(posg);
 			bb[y][x] = new Root(this,posg,this.owner, "Root", false);
@@ -301,9 +300,6 @@ public class Plant extends SimProcess {
 	 		}
 
 			sendTraceNote("Made root at position" + " " + this.growthpoint);
-			//return true;
-		//}
-		//return false;
 	}
 
 	public int gettype(){
@@ -338,12 +334,10 @@ public class Plant extends SimProcess {
 			this.nitro = this.nitro -(this.resourceconn * this.positions.size());
 
 			if((age>=maturity&&searchflag==true)&& finrepo == false){
-				//int maxY=this.simulation.board.sizey;
 				Position minY = this.positions.get(0);
 
 		
 				for(Position growthPlace:this.positions){
-					//System.out.println(growthPlace.Gety() + " " +minY.Gety());
 					if(growthPlace.Gety()< minY.Gety()){
 						minY=growthPlace;
 					}
@@ -390,7 +384,6 @@ public class Plant extends SimProcess {
 					}
 				}
 				else{
-					//connectedresources.add((Resource)this.simulation.board.boardboi[growto.Gety()][growto.Getx()]);
 					growthflag = false;
 					searchflag = true;
 				}
@@ -398,18 +391,13 @@ public class Plant extends SimProcess {
 			}
 			if(readyToMateFlag== true){
 				Position potMate= findMate(skyPoint);
-//				System.out.println(plant_no+" ready to reproduce "+ potMate);
 				if (potMate.Getx()!=-1&&potMate.Gety()!=-1){
-					System.out.println((simulation.board.boardboi[potMate.Gety()][potMate.Getx()]));
 					Root mater = (Root)(simulation.board.boardboi[potMate.Gety()][potMate.Getx()]);
-					System.out.println(mater);
+
 					Plant mate = mater.originplant;
 					hold(new TimeSpan(1, TimeUnit.MINUTES));
-//					System.out.println(plant_no+" selected mate");
 					death();					
-//					System.out.println(plant_no+" deleted itself");
 					generateSeedlings(mate);	
-//					System.out.println(plant_no+" planted babies");	
 					matedFlag=true;	
 					sendTraceNote("Mated with "+mate);
 					break;
@@ -441,13 +429,27 @@ public class Plant extends SimProcess {
 		}
 	}
 	public void death(){
+		
 		for (Position posdel : this.positions) {
-			this.simulation.board.boardboi[posdel.Gety()][posdel.Getx()] = null;
-			
-			// need to add maturity and growth up, add repoducing and next generation
+			this.simulation.board.boardboi[posdel.Gety()][posdel.Getx()] = null;		
+		}
+		if(connectedresources.size()>1&&(positions.size()>5)){spawnResource();}
+	}
+	public void spawnResource(){
+		int newResPart = (int)(Math.random()*positions.size()+1)-1;
+		Position resPos = positions.get(newResPart);
+		int i=0;
+		while(simulation.board.validpos(resPos)==false&&i<50){
+			newResPart = (int)(Math.random()*positions.size()+1)-1;
+			resPos = positions.get(newResPart);
+			i++;
+		}
+		if(i!=50){
+			int resType = (int)(Math.random()*3+1)+1;
+			simulation.board.boardboi[resPos.Gety()][resPos.Getx()] = new Resource(resType, water, simulation.board.names,"Resource",true,resPos.Gety(),resPos.Getx());
+			simulation.board.boardboi[resPos.Gety()][resPos.Getx()].activate();
 		}
 	}
-
 
 	public int lowestresource(){
 
@@ -537,7 +539,7 @@ public class Plant extends SimProcess {
 		if(agress>plant2.agress){p1Portion+=toBeFilled;}
 		else{p2Portion+=toBeFilled;}
 		int i=0;
-//		System.out.println("Got to before the while loop");
+
 		while(i<numberOfSeeds){//Stuff to modify Agressiveness, Growth_Rate, water consump, iron consump, nit consump, maturity, 
 			if(Math.random()<mutation){ newAgress= Math.random();}
 			else{ newAgress= newGeneValue(agress, agress, plant2.agress,plant2.agress);}
@@ -553,14 +555,10 @@ public class Plant extends SimProcess {
 			else{newMat = (int)(Math.floor(newGeneValue(maturity, agress,plant2.maturity,plant2.agress)));}
 			if(Math.random()<mutation){newMut = Math.random();}
 			else{ newMut= newGeneValue(mutation,agress,plant2.mutation,plant2.agress);}
-//			System.out.println("Got past all the number generation");
 			Position newOrigin= newSeedlingPlace(this.origin);
 			if(newOrigin!=null){
-//				System.out.println("Got the seedling's new birth place");
 				Plant seedling = new Plant(newAgress, newGrowthRate,newWCons,newICons,newNCons,newMat,newMut, newOrigin, simulation,"Plant", true,simulation.board.plantID);
-//				System.out.println("Generated new plant");
 				simulation.board.boardboi[newOrigin.Gety()][newOrigin.Getx()]= seedling;
-//				System.out.println("Placed new plant");
 				simulation.board.addToList(seedling);
 				simulation.board.plantID++;
 			}
