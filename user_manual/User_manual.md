@@ -57,13 +57,13 @@ After the plants you will be prompted to enter in the size of the boardstate whi
 
 After all info has been entered into the simulation the programme will run the simulation and bring up a prompt of how fair along the simulation is for example:
 
-![13%.png](13%.png)
+![percentage2](percentage2.png)
 
 The programme will run and may stall at times but will finish and reach 100% as the simulation finishes and is ready to display the simulation
 
 To access the simulation info and to go through the varying boardstates all you need to do is to close the percentage prompt  by clicking on the x button and and a new tab will be opened in Firefox with the Simulation information.
 
-![100%.png](100%.png)
+![percentage1.png](percentage1.png)
 
 Upon closing the results progress prompt the Plant simulation tab will be opened, up the top left of the tab will contain the legend and the board progress slider. Below it is the actual board state which can be affected by the slider to show the simulation running and showing the boardstate at each tic.
 
