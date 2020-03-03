@@ -13,6 +13,7 @@ public class Board extends SimProcess{
 	public Integer resources;
 	public Integer plantID;
 	public ArrayList<Plant> newSeedlings = new ArrayList<Plant>();
+	public LaunchSimulation names;
 
 	public Board( Integer sizey, Integer sizex, Integer noPlants, LaunchSimulation name, String desc, boolean showInTrace){
 		super(name,desc,showInTrace);
@@ -20,7 +21,8 @@ public class Board extends SimProcess{
 		this.sizey = sizey;
 		this.noPlants = noPlants;
 		this.resources = ((this.sizex * this.sizey)/16);
-		this.plantID=1;		
+		this.plantID=1;
+		this.names=name;		
 		this.boardboi = makeboard(name);
 	}
 
