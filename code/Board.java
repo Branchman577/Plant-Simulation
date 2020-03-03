@@ -32,77 +32,76 @@ public class Board extends SimProcess{
 		double resourceprob;
 
 		SimProcess[][] returnarray = new SimProcess[this.sizey +2 ][this.sizex]; // plus 2 for sky
-
+		System.out.println(returnarray[0][0]);
 		//placing plants
-		
-		for (int i =2; i < returnarray.length; i++ ) {
-			for (int j =0; j < returnarray[i].length; j++ ) {
-				plantprob = probplacer(2.0,(double)this.sizex,plantcount,0.3,j,i);
-
-				// System.out.println(plantprob);
-				if ((plantprob >=1 || Math.random()< plantprob) && plantcount != 0){
-					double mat = Math.random() * 20 + 1;
-					int matt = (int)(mat) + 10;
-					Position pos = new Position(i,j);
-					returnarray[i][j] =  new Plant(Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),matt, Math.random(),pos,name, "Plant", true,plantID);
+		while(plantcount>=1){
+			Position posPlant = placeObject(1,3,0,sizex,returnarray);
+			System.out.println(posPlant);
+			double mat = Math.random() * 20 + 1;
+			int matt = (int)(mat) + 10;
+//			Position pos = new Position(i,j);
+			returnarray[posPlant.Gety()][posPlant.Getx()] =  new Plant(Math.random(),Math.random(),Math.random(),Math.random(),Math.random(),matt, Math.random(),posPlant,name, "Plant", true,plantID);
 					plantcount -= 1;
 					plantID++;
-//					returnarray[i][j].activate();
-					//System.out.println(returnarray[i][j]);
-				}
-				else{
-					returnarray[i][j] = null;
-				}
-						
-			}
 		}
 		//Placing resources
 		int minwater =1;
 		int miniron = 1;
 		int minnitro= 1;
-		for (int l =4; l < returnarray.length; l++ ) {
-			for (int k =0; k < returnarray[l].length; k++ ) {
-				resourceprob = probplacer((double)this.sizey,(double)this.sizex,resourcecount,0.3,k,l);
-
-				if (returnarray[l][k]== null) {
-					if ((resourceprob >=1 || Math.random()< resourceprob) && resourcecount != 0) {
-
-						int numtype = (int)(Math.random() * ((4 - 2) + 1)) + 2; // random number between 2 and 4 inclusive
-						if(minwater == 1){
-							returnarray[l][k] = new Resource(2,1000.0,name,"Resource",true,l,k);//min 1 water tile
-							minwater =0;
-						}
-						else if(miniron == 1){
-							returnarray[l][k] = new Resource(3,1000.0,name,"Resource",true,l,k);//min 1 iron tile
-							miniron =0;
-						}
-						else if (minnitro == 1){
-							returnarray[l][k] = new Resource(4,1000.0,name,"Resource",true,l,k);//min 1 iron tile
-							minnitro =0;
-						}
-						else if ((minwater ==0 && miniron == 0) && minnitro== 0) {
-							returnarray[l][k] = new Resource(numtype,1000.0,name,"Resource",true,l,k);//random choice the rest of resources
-						}
-							
-						resourcecount -=1;
-					}
-				} 
+		while(resourcecount>0){
+			Position posResource= placeObject(2,sizey,0,sizex,returnarray);
+			int numtype=(int)(Math.random()*((4-2)+1))+2;
+			if(minwater == 1){
+				returnarray[posResource.Gety()][posResource.Getx()] = new Resource(2,1000.0,name,"Resource",true,posResource.Gety(),posResource.Getx());//min 1 water tile
+				minwater =0;
 			}
+			else if(miniron == 1){
+				returnarray[posResource.Gety()][posResource.Getx()] = new Resource(3,1000.0,name,"Resource",true,posResource.Gety(),posResource.Getx());//min 1 iron tile
+				miniron =0;
+			}
+			else if (minnitro == 1){
+				returnarray[posResource.Gety()][posResource.Getx()] = new Resource(4,1000.0,name,"Resource",true,posResource.Gety(),posResource.Getx());//min 1 iron tile
+				minnitro =0;
+			}
+			else if ((minwater ==0 && miniron == 0) && minnitro== 0) {
+				returnarray[posResource.Gety()][posResource.Getx()] = new Resource(numtype,1000.0,name,"Resource",true,posResource.Gety(),posResource.Getx());//random choice the rest of resources
+			}
+			resourcecount--;
+		}
+		//placing rocks
+		while(numrocks>0){
+			Position posRock = placeObject(2,sizey,0,sizex,returnarray);
+			returnarray[posRock.Gety()][posRock.Getx()]=new Resource(5,1000.0,name,"Rock",true,posRock.Gety(),posRock.Getx());
+			numrocks--;
 		}
 		// placing rocks
-		for (int l =4; l < returnarray.length; l++ ) {
-			for (int k =0; k < returnarray[l].length; k++ ) {
-				resourceprob = probplacer((double)this.sizey,(double)this.sizex,numrocks,0.3,k,l);
+//		for (int l =4; l < returnarray.length; l++ ) {
+//			for (int k =0; k < returnarray[l].length; k++ ) {
+//				resourceprob = probplacer((double)this.sizey,(double)this.sizex,numrocks,0.3,k,l);
 
-				if (returnarray[l][k]== null) {
-					if ((resourceprob >=1 || Math.random()< resourceprob) && numrocks != 0) {
-						returnarray[l][k] = new Resource(5,1000.0,name,"Resource",true,l,k);
-						numrocks -=1;
-					}
-				}
-			}
-		}
+//				if (returnarray[l][k]== null) {
+//					if ((resourceprob >=1 || Math.random()< resourceprob) && numrocks != 0) {
+//						returnarray[l][k] = new Resource(5,1000.0,name,"Resource",true,l,k);
+//						numrocks -=1;
+//					}
+//				}
+//			}
+//		}
 		return returnarray;
+	}
+	
+	public Position placeObject(int min_y, int max_y, int min_x,int max_x, SimProcess[][] array){
+		int newX=-1;
+		int newY=-1;
+		int counter=0;
+		while((newX<0||newX>sizex-1)||(newY<=min_y||newY>max_y)||array[newY][newX]!=null&&counter!=50){
+			newX = (int)((Math.random()*max_x+1));//+();
+			newY = (int)((Math.random()*(max_y-min_y)+1)+min_y);
+			counter++;
+
+		}
+		if(counter==50){return null;}
+		return new Position(newY,newX);
 	}
 	public double probplacer(double rows, double columns,double numtoplace, double base, int scanx,int scany){
 		//System.out.println(rows+" "+columns+" "+numtoplace+" "+base+" "+scanx+" "+scany);
