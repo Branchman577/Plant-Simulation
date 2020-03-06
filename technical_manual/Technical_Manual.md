@@ -1,4 +1,5 @@
-**Plant Simulation Technical Specification**
+**Plant Simulation Technical Manual**
+
 **By Nevan Oman-Crowe and Gergely Gellert**
 
 **0. Table of content**
