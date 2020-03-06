@@ -1,28 +1,28 @@
-Plant Simulation Technical Specification
-By Nevan Oman-Crowe and Gergely Gellert
+**Plant Simulation Technical Specification**
+**By Nevan Oman-Crowe and Gergely Gellert**
 
-0. Table of content
-Introduction
-Overview - Page  2
-Glossary - Page 3
-System Architecture
-Dependencies - Page 5 
-Language and Library choices -Page 5
- The System - Page 5
-High-Level Design
-Initial Design - Page 7
-Current Design - Page 7 
- Context Diagram - Page 7
- Data Flow Diagram - Page 8
-Problems and Resolution
-Class Paths -Page 10
-Infinite Searching Loop -Page 10
-Get Firefox to read log File -Page 10
-Camera Height scaling in respect to object size -Page 10
-Installation Guide 
- Dependencies -Page 12
-Setting up your Firefox to be able to work with our UI - Page 12
-Installation of the System - Page 13
+**0. Table of content**
+1 Introduction 
+    1.1 Overview - Page  2 
+    1.2 Glossary - Page 3 
+2 System Architecture 
+    2.1 Dependencies - Page 5 
+    2.2 Language and Library choices -Page 5 
+    2.3 The System - Page 5 
+3 High-Level Design 
+    3.1 Initial Design - Page 7 
+    3.2 Current Design - Page 7   
+    3.3 Context Diagram - Page 7 
+    3.4 Data Flow Diagram - Page 8 
+4 Problems and Resolution 
+    4.1 Class Paths -Page 10 0
+    4.2 Infinite Searching Loop -Page 10 
+    4.3 Get Firefox to read log File -Page 10 
+    4.4 Camera Height scaling in respect to object size -Page 10 
+5 Installation Guide 
+    5.1 Dependencies -Page 12 
+    5.2 Setting up your Firefox to be able to work with our UI - Page 12 
+    5.3 Installation of the System - Page 13 
 
  1.Introduction
 
