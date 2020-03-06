@@ -138,7 +138,7 @@ Once the simulator is finished the UI will launch in a Firefox window. The UI re
 
 The entire system operates in a Linux environment. The bash script would not run outside of a Linux environment because the commands are specifically made to work in a Linux environment. 
 
-
+![SystemArchitectureBasic.jpg](SystemArchitectureBasic.jpg)
 
 
 
@@ -164,11 +164,13 @@ Our current system is made up of 3 parts, a UI, the Simulator and a Bash script.
 
 The context diagram enables us to define and clarify the boundaries of the Plant simulation system. It identifies the flows of information inside the system along with the system interacting with external parts such as the user inputting variables.
 
+![ContextDiagram_TechSpec.jpg](ContextDiagram_TechSpec.jpg)
 
 **3.4 Data Flow Diagram**
 
 A data-flow diagram is a way of representing a flow of a data of the Plant Simulation System and also provides information about the outputs and inputs of each entity and the process itself. 
 
+![DFD_TechSpec.jpg](DFD_TechSpec.jpg)
 
 **4. Problems and Resolutions**
 
@@ -213,7 +215,7 @@ Three.js generates a 3d space that we can put objects in to. To view this 3d spa
 
 The solution to this problem came after a lot of research into vanishing points when it comes to field of view. Field of View an angle that you set which will result in a certain area to be displayed. The vanishing point refers to where imaginary lines which originate from the 4 corners of the visible area meet. This is the point where it would be an optimal point to put a camera because if you set the size of the visible area to be the size of the simulation space, with a set Field of View angle, you can calculate using trigonometry what height the camera should be at.
 
-
+![CameraExplanation__1_.jpg](CameraExplanation__1_.jpg)
 
 
 **5. Installation Guide**
